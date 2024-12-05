@@ -1,4 +1,4 @@
-package fr.oliweb.mandoline;
+package fr.oliweb.mandoline.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
