@@ -26,3 +26,4 @@ src/test/**/static/
 
 ### VS Code ###
 .vscode/
+/application-test.properties

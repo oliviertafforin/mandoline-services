@@ -1,4 +1,4 @@
 package fr.oliweb.mandoline.model;
 
-public class ListeCourse {
+public class ListeCourseDb {
 }

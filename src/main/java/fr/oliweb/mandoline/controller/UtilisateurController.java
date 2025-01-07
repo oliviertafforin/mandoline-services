@@ -1,6 +1,6 @@
 package fr.oliweb.mandoline.controller;
 
-import fr.oliweb.mandoline.dto.UtilisateurDTO;
+import fr.oliweb.mandoline.dtos.UtilisateurDTO;
 import fr.oliweb.mandoline.service.UtilisateurService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,6 +1,6 @@
 package fr.oliweb.mandoline.controller;
 
-import fr.oliweb.mandoline.dto.ImageDTO;
+import fr.oliweb.mandoline.dtos.ImageDTO;
 import fr.oliweb.mandoline.service.ImageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

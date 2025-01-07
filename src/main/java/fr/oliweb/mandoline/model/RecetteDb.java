@@ -3,11 +3,12 @@ package fr.oliweb.mandoline.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
 @Table(name = "recette")
-public class Recette {
+public class RecetteDb {
     @Id
     @JsonProperty(value = "Id")
     @Column(name = "id")
@@ -28,6 +29,9 @@ public class Recette {
 
     @Column(name = "tps_cuisson")
     private int tpsCuisson;
+
+    @OneToMany(mappedBy = "recette", fetch= FetchType.EAGER)
+    private Set<RecetteIngredientDb> recetteIngredients;
 
     public UUID getId() {
         return id;
@@ -75,5 +79,13 @@ public class Recette {
 
     public void setTpsCuisson(int tpsCuisson) {
         this.tpsCuisson = tpsCuisson;
+    }
+
+    public Set<RecetteIngredientDb> getRecetteIngredients() {
+        return recetteIngredients;
+    }
+
+    public void setRecetteIngredients(Set<RecetteIngredientDb> recetteIngredients) {
+        this.recetteIngredients = recetteIngredients;
     }
 }

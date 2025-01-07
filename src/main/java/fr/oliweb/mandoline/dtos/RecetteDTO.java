@@ -1,7 +1,8 @@
-package fr.oliweb.mandoline.dto;
+package fr.oliweb.mandoline.dtos;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.List;
 import java.util.UUID;
 
 @Schema(description = "Data Transfer Object représentant une recette")
@@ -20,6 +21,9 @@ public class RecetteDTO {
     private int tpsPrepa;
     @Schema(description = "Temps de cuisson de la recette", example = "45")
     private int tpsCuisson;
+
+    @Schema(description = "Ingredients")
+    private List<RecetteIngredientDTO> recetteIngredients;
 
     public UUID getId() {
         return id;
@@ -51,6 +55,14 @@ public class RecetteDTO {
 
     public void setTemperature(int temperature) {
         this.temperature = temperature;
+    }
+
+    public List<RecetteIngredientDTO> getRecetteIngredients() {
+        return recetteIngredients;
+    }
+
+    public void setRecetteIngredients(List<RecetteIngredientDTO> recetteIngredients) {
+        this.recetteIngredients = recetteIngredients;
     }
 
     public int getTpsPrepa() {

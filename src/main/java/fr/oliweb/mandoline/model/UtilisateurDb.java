@@ -6,19 +6,16 @@ import jakarta.persistence.*;
 import java.util.UUID;
 
 @Entity
-@Table(name = "image")
-public class Image {
+@Table(name = "utilisateur")
+public class UtilisateurDb {
     @Id
     @JsonProperty(value = "Id")
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "libelle")
-    private String libelle;
-
-    @Column(name = "url")
-    private String url;
+    @Column(name = "pseudo")
+    private String pseudo;
 
     public void setId(UUID id) {
         this.id = id;
@@ -28,19 +25,11 @@ public class Image {
         return id;
     }
 
-    public String getLibelle() {
-        return libelle;
+    public String getPseudo() {
+        return pseudo;
     }
 
-    public void setLibelle(String libelle) {
-        this.libelle = libelle;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
+    public void setPseudo(String pseudo) {
+        this.pseudo = pseudo;
     }
 }

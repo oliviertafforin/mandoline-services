@@ -1,8 +1,7 @@
 package fr.oliweb.mandoline.service;
 
-import fr.oliweb.mandoline.dto.UtilisateurDTO;
-import fr.oliweb.mandoline.model.Recette;
-import fr.oliweb.mandoline.model.Utilisateur;
+import fr.oliweb.mandoline.dtos.UtilisateurDTO;
+import fr.oliweb.mandoline.model.UtilisateurDb;
 import fr.oliweb.mandoline.repository.UtilisateurRepository;
 import org.springframework.stereotype.Service;
 
@@ -30,14 +29,14 @@ public class UtilisateurService {
     }
 
     public UtilisateurDTO creerUtilisateur(UtilisateurDTO utilisateurDTO) {
-        Utilisateur utilisateur = toEntity(utilisateurDTO);
-        Utilisateur utilisateurEnregistre = repository.save(utilisateur);
+        UtilisateurDb utilisateur = toEntity(utilisateurDTO);
+        UtilisateurDb utilisateurEnregistre = repository.save(utilisateur);
         return toDTO(utilisateurEnregistre);
     }
 
     public UtilisateurDTO majUtilisateur(UUID id, UtilisateurDTO utilisateurDTO) {
         return repository.findById(id).map(utilisateur -> {
-            Utilisateur utilisateurMaj = toEntity(utilisateurDTO);
+            UtilisateurDb utilisateurMaj = toEntity(utilisateurDTO);
             utilisateurMaj.setId(utilisateur.getId());
             return toDTO(repository.save(utilisateur));
         }).orElseThrow(() -> new RuntimeException("Recette introuvable"));
@@ -51,7 +50,7 @@ public class UtilisateurService {
     }
 
     // Mapper pour transformer une entité en DTO
-    private UtilisateurDTO toDTO(Utilisateur utilisateur) {
+    private UtilisateurDTO toDTO(UtilisateurDb utilisateur) {
         UtilisateurDTO utilisateurDTO = new UtilisateurDTO();
         utilisateurDTO.setId(utilisateur.getId());
         utilisateurDTO.setPseudo(utilisateur.getPseudo());
@@ -59,8 +58,8 @@ public class UtilisateurService {
     }
 
     // Mapper pour transformer un DTO en entité
-    private Utilisateur toEntity(UtilisateurDTO utilisateurDTO) {
-        Utilisateur utilisateur = new Utilisateur();
+    private UtilisateurDb toEntity(UtilisateurDTO utilisateurDTO) {
+        UtilisateurDb utilisateur = new UtilisateurDb();
         if(utilisateurDTO.getId() != null){
             utilisateur.setId(utilisateurDTO.getId());
         }

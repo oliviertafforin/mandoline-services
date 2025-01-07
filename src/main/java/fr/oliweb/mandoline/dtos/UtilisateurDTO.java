@@ -1,4 +1,4 @@
-package fr.oliweb.mandoline.dto;
+package fr.oliweb.mandoline.dtos;
 
 import java.util.UUID;
 

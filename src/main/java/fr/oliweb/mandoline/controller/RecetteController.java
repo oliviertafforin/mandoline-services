@@ -1,7 +1,6 @@
 package fr.oliweb.mandoline.controller;
 
-import fr.oliweb.mandoline.dto.RecetteDTO;
-import fr.oliweb.mandoline.dto.UtilisateurDTO;
+import fr.oliweb.mandoline.dtos.RecetteDTO;
 import fr.oliweb.mandoline.service.RecetteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

@@ -1,8 +1,9 @@
 package fr.oliweb.mandoline.service;
 
-import fr.oliweb.mandoline.dto.RecetteDTO;
-import fr.oliweb.mandoline.dto.UtilisateurDTO;
-import fr.oliweb.mandoline.model.Recette;
+import fr.oliweb.mandoline.dtos.RecetteDTO;
+import fr.oliweb.mandoline.mappers.RecetteMapper;
+import fr.oliweb.mandoline.model.RecetteDb;
+import fr.oliweb.mandoline.repository.ImageRepository;
 import fr.oliweb.mandoline.repository.RecetteRepository;
 import org.springframework.stereotype.Service;
 
@@ -10,37 +11,43 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static fr.oliweb.mandoline.mappers.RecetteMapper.toDb;
+import static fr.oliweb.mandoline.mappers.RecetteMapper.toDto;
+
 @Service
 public class RecetteService {
 
     private final RecetteRepository repository;
+    private final ImageRepository imageRepository;
 
-    public RecetteService(RecetteRepository repository) {
+    public RecetteService(RecetteRepository repository,
+                          ImageRepository imageRepository) {
         this.repository = repository;
+        this.imageRepository = imageRepository;
     }
 
     public List<RecetteDTO> getAllRecettes() {
         return repository.findAll().stream()
-                .map(this::toDTO)
+                .map(r -> toDto(r, imageRepository))
                 .toList();
     }
 
 
     public Optional<RecetteDTO> getRecetteParId(UUID id) {
-        return repository.findById(id).map(this::toDTO);
+        return repository.findById(id).map(r -> toDto(r, imageRepository));
     }
 
     public RecetteDTO creerRecette(RecetteDTO recetteDTO) {
-        Recette recette = toEntity(recetteDTO);
-        Recette savedRecette = repository.save(recette);
-        return toDTO(savedRecette);
+        RecetteDb recette = RecetteMapper.toDb(recetteDTO);
+        RecetteDb savedRecette = repository.save(recette);
+        return toDto(savedRecette, imageRepository);
     }
 
     public RecetteDTO majRecette(UUID id, RecetteDTO recetteDTO) {
         return repository.findById(id).map(recette -> {
-            Recette recetteMaj = toEntity(recetteDTO);
+            RecetteDb recetteMaj = toDb(recetteDTO);
             recetteMaj.setId(recette.getId());
-            return toDTO(repository.save(recette));
+            return toDto(repository.save(recette), imageRepository);
         }).orElseThrow(() -> new RuntimeException("Recette introuvable"));
     }
 
@@ -49,32 +56,6 @@ public class RecetteService {
             throw new RuntimeException("Recette introuvable");
         }
         repository.deleteById(id);
-    }
-
-    // Mapper pour transformer une entité en DTO
-    private RecetteDTO toDTO(Recette recette) {
-        RecetteDTO recetteDTO = new RecetteDTO();
-        recetteDTO.setId(recette.getId());
-        recetteDTO.setNom(recette.getNom());
-        recette.setInstructions(recette.getInstructions());
-        recette.setTpsPrepa(recette.getTpsPrepa());
-        recette.setTpsCuisson(recette.getTpsCuisson());
-        recette.setTemperature(recette.getTemperature());
-        return recetteDTO;
-    }
-
-    // Mapper pour transformer un DTO en entité
-    private Recette toEntity(RecetteDTO recetteDTO) {
-        Recette recette = new Recette();
-        if(recetteDTO.getId() != null){
-            recette.setId(recetteDTO.getId());
-        }
-        recette.setTemperature(recetteDTO.getTemperature());
-        recette.setNom(recetteDTO.getNom());
-        recette.setInstructions(recetteDTO.getInstructions());
-        recette.setTpsCuisson(recetteDTO.getTpsCuisson());
-        recette.setTpsPrepa(recetteDTO.getTpsPrepa());
-        return recette;
     }
 }
 
