@@ -22,6 +22,8 @@ public class RecetteMapper {
         dto.setTemperature(db.getTemperature());
         dto.setTpsPrepa(db.getTpsPrepa());
         dto.setTpsCuisson(db.getTpsCuisson());
+        dto.setProprietaire(UtilisateurMapper.toDto(db.getProprietaire()));
+        dto.setImage(ImageMapper.toDto(db.getImage()));
 
         if (db.getRecetteIngredients() != null) {
             dto.setRecetteIngredients(
@@ -49,7 +51,8 @@ public class RecetteMapper {
         recette.setTemperature(dto.getTemperature());
         recette.setTpsPrepa(dto.getTpsPrepa());
         recette.setTpsCuisson(dto.getTpsCuisson());
-
+        recette.setProprietaire(UtilisateurMapper.toDb(dto.getProprietaire()));
+        recette.setImage(ImageMapper.toDb(dto.getImage()));
         if (dto.getRecetteIngredients() != null) {
             recette.setRecetteIngredients(
                     new HashSet<>(RecetteIngredientMapper.toEntityList(dto.getRecetteIngredients()))

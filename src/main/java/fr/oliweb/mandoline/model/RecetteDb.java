@@ -27,6 +27,10 @@ public class RecetteDb {
     @Column(name = "tps_prepa")
     private int tpsPrepa;
 
+    @OneToOne
+    @JoinColumn(name = "id")
+    private ImageDb image;
+
     @Column(name = "tps_cuisson")
     private int tpsCuisson;
 
@@ -36,6 +40,14 @@ public class RecetteDb {
 
     @OneToMany(mappedBy = "recette", fetch = FetchType.EAGER)
     private Set<RecetteIngredientDb> recetteIngredients;
+
+    public ImageDb getImage() {
+        return image;
+    }
+
+    public void setImage(ImageDb image) {
+        this.image = image;
+    }
 
     public UUID getId() {
         return id;

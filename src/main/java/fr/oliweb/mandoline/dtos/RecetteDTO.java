@@ -21,9 +21,29 @@ public class RecetteDTO {
     private int tpsPrepa;
     @Schema(description = "Temps de cuisson de la recette", example = "45")
     private int tpsCuisson;
+    @Schema(description = "Utilisateur propriétaire de la recette")
+    private UtilisateurDTO proprietaire;
+    @Schema(description = "Image de couverture de la recette")
+    private ImageDTO image;
 
     @Schema(description = "Ingredients")
     private List<RecetteIngredientDTO> recetteIngredients;
+
+    public UtilisateurDTO getProprietaire() {
+        return proprietaire;
+    }
+
+    public void setProprietaire(UtilisateurDTO proprietaire) {
+        this.proprietaire = proprietaire;
+    }
+
+    public ImageDTO getImage() {
+        return image;
+    }
+
+    public void setImage(ImageDTO image) {
+        this.image = image;
+    }
 
     public UUID getId() {
         return id;
