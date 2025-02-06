@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 public class RecetteIngredientMapper {
 
     // Convert RecetteIngredient to RecetteIngredientDTO
-    public static RecetteIngredientDTO toDto(RecetteIngredientDb db, ImageRepository imageRepository) {
+    public static RecetteIngredientDTO toDto(RecetteIngredientDb db) {
         if (db == null) {
             return null;
         }
@@ -40,12 +40,12 @@ public class RecetteIngredientMapper {
     }
 
     // Convert a List of RecetteIngredient to a List of RecetteIngredientDTO
-    public static List<RecetteIngredientDTO> toDtoList(List<RecetteIngredientDb> dbs, ImageRepository imageRepository) {
+    public static List<RecetteIngredientDTO> toDtoList(List<RecetteIngredientDb> dbs) {
         if (dbs == null || dbs.isEmpty()) {
             return null;
         }
 
-        return dbs.stream().map(e -> toDto(e, imageRepository)).collect(Collectors.toList());
+        return dbs.stream().map(RecetteIngredientMapper::toDto).collect(Collectors.toList());
     }
 
     // Convert a List of RecetteIngredientDTO to a List of RecetteIngredient

@@ -10,7 +10,7 @@ import java.util.HashSet;
 public class RecetteMapper {
 
     // Convert Recette to RecetteDTO
-    public static RecetteDTO toDto(RecetteDb db, ImageRepository imageRepository) {
+    public static RecetteDTO toDto(RecetteDb db) {
         if (db == null) {
             return null;
         }
@@ -28,8 +28,7 @@ public class RecetteMapper {
         if (db.getRecetteIngredients() != null) {
             dto.setRecetteIngredients(
                     RecetteIngredientMapper.toDtoList(
-                            new ArrayList<>(db.getRecetteIngredients()),
-                            imageRepository
+                            new ArrayList<>(db.getRecetteIngredients())
                     )
             );
         }

@@ -18,36 +18,33 @@ import static fr.oliweb.mandoline.mappers.RecetteMapper.toDto;
 public class RecetteService {
 
     private final RecetteRepository repository;
-    private final ImageRepository imageRepository;
 
-    public RecetteService(RecetteRepository repository,
-                          ImageRepository imageRepository) {
+    public RecetteService(RecetteRepository repository) {
         this.repository = repository;
-        this.imageRepository = imageRepository;
     }
 
     public List<RecetteDTO> getAllRecettes() {
         return repository.findAll().stream()
-                .map(r -> toDto(r, imageRepository))
+                .map(RecetteMapper::toDto)
                 .toList();
     }
 
 
     public Optional<RecetteDTO> getRecetteParId(UUID id) {
-        return repository.findById(id).map(r -> toDto(r, imageRepository));
+        return repository.findById(id).map(RecetteMapper::toDto);
     }
 
     public RecetteDTO creerRecette(RecetteDTO recetteDTO) {
         RecetteDb recette = RecetteMapper.toDb(recetteDTO);
         RecetteDb savedRecette = repository.save(recette);
-        return toDto(savedRecette, imageRepository);
+        return toDto(savedRecette);
     }
 
     public RecetteDTO majRecette(UUID id, RecetteDTO recetteDTO) {
         return repository.findById(id).map(recette -> {
             RecetteDb recetteMaj = toDb(recetteDTO);
             recetteMaj.setId(recette.getId());
-            return toDto(repository.save(recette), imageRepository);
+            return toDto(repository.save(recette));
         }).orElseThrow(() -> new RuntimeException("Recette introuvable"));
     }
 

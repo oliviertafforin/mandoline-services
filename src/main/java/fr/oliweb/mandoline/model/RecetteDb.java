@@ -28,7 +28,7 @@ public class RecetteDb {
     private int tpsPrepa;
 
     @OneToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "image", referencedColumnName = "id")
     private ImageDb image;
 
     @Column(name = "tps_cuisson")
