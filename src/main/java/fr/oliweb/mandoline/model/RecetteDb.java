@@ -30,7 +30,11 @@ public class RecetteDb {
     @Column(name = "tps_cuisson")
     private int tpsCuisson;
 
-    @OneToMany(mappedBy = "recette", fetch= FetchType.EAGER)
+    @ManyToOne
+    @JoinColumn(name = "proprietaire")
+    private UtilisateurDb proprietaire;
+
+    @OneToMany(mappedBy = "recette", fetch = FetchType.EAGER)
     private Set<RecetteIngredientDb> recetteIngredients;
 
     public UUID getId() {
@@ -87,5 +91,13 @@ public class RecetteDb {
 
     public void setRecetteIngredients(Set<RecetteIngredientDb> recetteIngredients) {
         this.recetteIngredients = recetteIngredients;
+    }
+
+    public UtilisateurDb getProprietaire() {
+        return proprietaire;
+    }
+
+    public void setProprietaire(UtilisateurDb proprietaire) {
+        this.proprietaire = proprietaire;
     }
 }

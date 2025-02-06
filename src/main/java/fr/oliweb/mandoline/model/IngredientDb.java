@@ -3,6 +3,7 @@ package fr.oliweb.mandoline.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
+import java.awt.*;
 import java.util.Set;
 import java.util.UUID;
 
@@ -18,8 +19,9 @@ public class IngredientDb {
     @Column(name = "nom")
     private String nom;
 
-    @Column(name = "image")
-    private UUID image;
+    @OneToOne
+    @JoinColumn(name = "image", referencedColumnName = "id")
+    private ImageDb image;
 
     @OneToMany(mappedBy = "ingredient")
     private Set<RecetteIngredientDb> recetteIngredients;
@@ -40,11 +42,11 @@ public class IngredientDb {
         this.nom = nom;
     }
 
-    public UUID getImage() {
+    public ImageDb getImage() {
         return image;
     }
 
-    public void setImage(UUID image) {
+    public void setImage(ImageDb image) {
         this.image = image;
     }
 

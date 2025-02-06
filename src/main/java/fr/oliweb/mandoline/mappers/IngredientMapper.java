@@ -2,11 +2,8 @@ package fr.oliweb.mandoline.mappers;
 
 import fr.oliweb.mandoline.dtos.IngredientDTO;
 import fr.oliweb.mandoline.model.IngredientDb;
-import fr.oliweb.mandoline.model.RecetteIngredientDb;
 import fr.oliweb.mandoline.repository.ImageRepository;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,8 +19,8 @@ public class IngredientMapper {
         dto.setNom(db.getNom()); // Map the name
 
         // Map the Image (assume ImageMapper exists)
-        if (db.getImage() != null) {
-            dto.setImage(ImageMapper.toDto(imageRepository.findById(db.getImage()).orElse(null)));
+        if (db.getImage() != null && imageRepository != null) {
+            dto.setImage(ImageMapper.toDto(db.getImage()));
         }
 
 //        // Map the list of RecetteIngredients
@@ -37,7 +34,7 @@ public class IngredientMapper {
     }
 
     // Convert IngredientDTO to Ingredient
-    public static IngredientDb toEntity(IngredientDTO dto) {
+    public static IngredientDb toDb(IngredientDTO dto) {
         if (dto == null) {
             return null;
         }
@@ -48,7 +45,7 @@ public class IngredientMapper {
 
         // Mappe l'image
         if (dto.getImage() != null) {
-            entity.setImage(ImageMapper.toDb(dto.getImage()).getId());
+            entity.setImage(ImageMapper.toDb(dto.getImage()));
         }
 
         // Map la liste des RecetteIngredient
@@ -76,6 +73,6 @@ public class IngredientMapper {
             return null;
         }
 
-        return dtos.stream().map(IngredientMapper::toEntity).collect(Collectors.toList());
+        return dtos.stream().map(IngredientMapper::toDb).collect(Collectors.toList());
     }
 }

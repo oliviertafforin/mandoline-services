@@ -3,7 +3,6 @@ package fr.oliweb.mandoline.service;
 import fr.oliweb.mandoline.dtos.IngredientDTO;
 import fr.oliweb.mandoline.mappers.ImageMapper;
 import fr.oliweb.mandoline.model.IngredientDb;
-import fr.oliweb.mandoline.repository.ImageRepository;
 import fr.oliweb.mandoline.repository.IngredientRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +15,9 @@ import java.util.UUID;
 public class IngredientService {
 
     private final IngredientRepository repository;
-    private final ImageRepository imageRepository;
 
-    public IngredientService(IngredientRepository repository, ImageRepository imageRepository) {
+    public IngredientService(IngredientRepository repository) {
         this.repository = repository;
-        this.imageRepository = imageRepository;
     }
 
     public Optional<IngredientDTO> getIngredientParId(UUID id) {
@@ -60,18 +57,19 @@ public class IngredientService {
         IngredientDTO ingredientDTO = new IngredientDTO();
         ingredientDTO.setId(ingredient.getId());
         ingredientDTO.setNom(ingredient.getNom());
-//        ingredientDTO.setRecetteIngredients(ingredient.getRecetteIngredients().stream().toList());
-        imageRepository.findById(ingredient.getImage()).ifPresent(i -> ingredientDTO.setImage(ImageMapper.toDto(i)));
+        if (ingredient.getImage() != null) {
+            ingredientDTO.setImage(ImageMapper.toDto(ingredient.getImage()));
+        }
         return ingredientDTO;
     }
 
     // Mapper pour transformer un DTO en entité
     private IngredientDb toEntity(IngredientDTO ingredientDTO) {
         IngredientDb ingredient = new IngredientDb();
-        if(ingredientDTO.getId() != null){
+        if (ingredientDTO.getId() != null) {
             ingredient.setId(ingredientDTO.getId());
         }
-        ingredient.setImage(ingredientDTO.getImage().getId());
+        ingredient.setImage(ImageMapper.toDb(ingredientDTO.getImage()));
         ingredient.setNom(ingredientDTO.getNom());
         ingredient.setRecetteIngredients(new HashSet<>(ingredientDTO.getRecetteIngredients()));
         return ingredient;

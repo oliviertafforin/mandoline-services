@@ -16,8 +16,6 @@ public class RecetteIngredientMapper {
         }
 
         RecetteIngredientDTO dto = new RecetteIngredientDTO();
-//        dto.setRecette(RecetteMapper.toDto(db.getRecette(), imageRepository)); // Map Recette
-//        dto.setIngredient(IngredientMapper.toDto(db.getIngredient(), imageRepository)); // Map Ingredient
         dto.setQuantite(db.getQuantite());
         dto.setUnite(db.getUnite());
         dto.setOptionnel(db.getOptionnel());
@@ -33,7 +31,7 @@ public class RecetteIngredientMapper {
 
         RecetteIngredientDb entity = new RecetteIngredientDb();
         entity.setRecette(RecetteMapper.toDb(dto.getRecette())); // Map Recette
-        entity.setIngredient(IngredientMapper.toEntity(dto.getIngredient())); // Map Ingredient
+        entity.setIngredient(IngredientMapper.toDb(dto.getIngredient())); // Map Ingredient
         entity.setQuantite(dto.getQuantite());
         entity.setUnite(dto.getUnite());
         entity.setOptionnel(dto.getOptionnel());
