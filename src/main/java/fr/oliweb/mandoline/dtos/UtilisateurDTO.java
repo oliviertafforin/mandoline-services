@@ -6,6 +6,24 @@ public class UtilisateurDTO {
 
     private UUID id;
     private String pseudo;
+    private RoleDTO role;
+    private String mdp;
+
+    public RoleDTO getRole() {
+        return role;
+    }
+
+    public void setRole(RoleDTO role) {
+        this.role = role;
+    }
+
+    public String getMdp() {
+        return mdp;
+    }
+
+    public void setMdp(String mdp) {
+        this.mdp = mdp;
+    }
 
     public UUID getId() {
         return id;

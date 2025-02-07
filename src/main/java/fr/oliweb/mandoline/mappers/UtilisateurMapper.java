@@ -13,7 +13,8 @@ public class UtilisateurMapper {
         UtilisateurDTO dto = new UtilisateurDTO();
         dto.setId(db.getId());
         dto.setPseudo(db.getPseudo());
-
+        dto.setMdp(db.getMdp());
+        dto.setRole(RoleMapper.toDto(db.getRole()));
         return dto;
     }
 
@@ -25,7 +26,8 @@ public class UtilisateurMapper {
 
         UtilisateurDb utilisateur = new UtilisateurDb();
         utilisateur.setId(dto.getId());
-
+        utilisateur.setMdp(dto.getMdp());
+        utilisateur.setRole(RoleMapper.toDb(dto.getRole()));
         utilisateur.setPseudo(dto.getPseudo());
         return utilisateur;
     }
