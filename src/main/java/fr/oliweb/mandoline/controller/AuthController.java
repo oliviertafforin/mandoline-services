@@ -1,7 +1,6 @@
 package fr.oliweb.mandoline.controller;
 
 import fr.oliweb.mandoline.dtos.LoginRequeteDTO;
-import fr.oliweb.mandoline.dtos.UtilisateurDTO;
 import fr.oliweb.mandoline.service.UtilisateurService;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
@@ -24,9 +23,9 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity registerUser(@Valid @RequestBody final LoginRequeteDTO loginRequeteDTO) {
-        try{
+        try {
             utilisateurService.nouvelUtilisateur(loginRequeteDTO);
-        } catch (ValidationException ve){
+        } catch (ValidationException ve) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(ve.getMessage());
         }
 
