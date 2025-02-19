@@ -1,6 +1,11 @@
 package fr.oliweb.mandoline.dtos;
 
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.time.Month;
+import java.util.List;
+
 public class IngredientUtilisateurDTO {
 
     private UtilisateurDTO utilisateur;
@@ -12,6 +17,20 @@ public class IngredientUtilisateurDTO {
     private int prixUnite;
 
     private Boolean eviter;
+
+    @Schema(description = "Liste des ingrédients de remplacement possible")
+    private List<IngredientDTO> remplacements;
+
+    @Schema(description = "Mois où le produit est dit 'de saison'")
+    private List<Integer> saison;
+
+    public List<Integer> getSaison() {
+        return saison;
+    }
+
+    public void setSaison(List<Integer> saison) {
+        this.saison = saison;
+    }
 
 
     public IngredientDTO getIngredient() {
@@ -52,5 +71,13 @@ public class IngredientUtilisateurDTO {
 
     public void setEviter(Boolean eviter) {
         this.eviter = eviter;
+    }
+
+    public List<IngredientDTO> getRemplacements() {
+        return remplacements;
+    }
+
+    public void setRemplacements(List<IngredientDTO> remplacements) {
+        this.remplacements = remplacements;
     }
 }

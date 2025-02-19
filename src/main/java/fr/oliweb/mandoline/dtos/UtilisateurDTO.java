@@ -8,6 +8,7 @@ public class UtilisateurDTO {
     private String pseudo;
     private RoleDTO role;
     private String mdp;
+    private ImageDTO avatar;
 
     public RoleDTO getRole() {
         return role;
@@ -39,5 +40,13 @@ public class UtilisateurDTO {
 
     public void setPseudo(String pseudo) {
         this.pseudo = pseudo;
+    }
+
+    public ImageDTO getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(ImageDTO avatar) {
+        this.avatar = avatar;
     }
 }

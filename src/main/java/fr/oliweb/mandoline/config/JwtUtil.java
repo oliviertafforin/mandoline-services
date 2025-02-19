@@ -42,17 +42,18 @@ public class JwtUtil {
                 .subject(userDetails.getUsername())
                 .claim("roles", userDetails.getAuthorities())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+//                .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME)) //essai sans expiration
                 .signWith(getSigningKey())
                 .compact();
     }
 
     public boolean validateToken(String token, UserDetails userDetails) {
         final String pseudo = extractPseudo(token);
-        return pseudo.equals(userDetails.getUsername()) && !isTokenExpired(token);
+        return pseudo.equals(userDetails.getUsername()) ;
+        //&& !isTokenExpired(token);
     }
 
-    private boolean isTokenExpired(String token) {
-        return extractClaim(token, Claims::getExpiration).before(new Date());
-    }
+//    private boolean isTokenExpired(String token) {
+//        return extractClaim(token, Claims::getExpiration).before(new Date());
+//    }
 }

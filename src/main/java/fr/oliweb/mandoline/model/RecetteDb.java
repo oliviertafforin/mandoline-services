@@ -22,17 +22,17 @@ public class RecetteDb {
     private String instructions;
 
     @Column(name = "temperature")
-    private int temperature;
+    private Integer temperature;
 
     @Column(name = "tps_prepa")
-    private int tpsPrepa;
+    private Integer tpsPrepa;
 
     @OneToOne
     @JoinColumn(name = "image", referencedColumnName = "id")
     private ImageDb image;
 
     @Column(name = "tps_cuisson")
-    private int tpsCuisson;
+    private Integer tpsCuisson;
 
     @ManyToOne
     @JoinColumn(name = "proprietaire")
@@ -73,27 +73,27 @@ public class RecetteDb {
         this.instructions = instructions;
     }
 
-    public int getTemperature() {
+    public Integer getTemperature() {
         return temperature;
     }
 
-    public void setTemperature(int temperature) {
+    public void setTemperature(Integer temperature) {
         this.temperature = temperature;
     }
 
-    public int getTpsPrepa() {
+    public Integer getTpsPrepa() {
         return tpsPrepa;
     }
 
-    public void setTpsPrepa(int tpsPrepa) {
+    public void setTpsPrepa(Integer tpsPrepa) {
         this.tpsPrepa = tpsPrepa;
     }
 
-    public int getTpsCuisson() {
+    public Integer getTpsCuisson() {
         return tpsCuisson;
     }
 
-    public void setTpsCuisson(int tpsCuisson) {
+    public void setTpsCuisson(Integer tpsCuisson) {
         this.tpsCuisson = tpsCuisson;
     }
 

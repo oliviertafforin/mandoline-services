@@ -16,11 +16,11 @@ public class RecetteDTO {
     @Schema(description = "Instructions de préparation de la recette", example = "lorem ipsum dolor sit amet")
     private String instructions;
     @Schema(description = "Température du plat (chaude : 1, froide : 2, les deux : 0)", example = "2")
-    private int temperature;
+    private Integer temperature;
     @Schema(description = "Temps de préparation de la recette", example = "20")
-    private int tpsPrepa;
+    private Integer tpsPrepa;
     @Schema(description = "Temps de cuisson de la recette", example = "45")
-    private int tpsCuisson;
+    private Integer tpsCuisson;
     @Schema(description = "Utilisateur propriétaire de la recette")
     private UtilisateurDTO proprietaire;
     @Schema(description = "Image de couverture de la recette")
@@ -69,11 +69,11 @@ public class RecetteDTO {
         this.instructions = instructions;
     }
 
-    public int getTemperature() {
+    public Integer getTemperature() {
         return temperature;
     }
 
-    public void setTemperature(int temperature) {
+    public void setTemperature(Integer temperature) {
         this.temperature = temperature;
     }
 
@@ -85,19 +85,19 @@ public class RecetteDTO {
         this.recetteIngredients = recetteIngredients;
     }
 
-    public int getTpsPrepa() {
+    public Integer getTpsPrepa() {
         return tpsPrepa;
     }
 
-    public void setTpsPrepa(int tpsPrepa) {
+    public void setTpsPrepa(Integer tpsPrepa) {
         this.tpsPrepa = tpsPrepa;
     }
 
-    public int getTpsCuisson() {
+    public Integer getTpsCuisson() {
         return tpsCuisson;
     }
 
-    public void setTpsCuisson(int tpsCuisson) {
+    public void setTpsCuisson(Integer tpsCuisson) {
         this.tpsCuisson = tpsCuisson;
     }
 }

@@ -2,7 +2,9 @@ package fr.oliweb.mandoline.mappers;
 
 import fr.oliweb.mandoline.dtos.IngredientUtilisateurDTO;
 import fr.oliweb.mandoline.model.IngredientUtilisateurDb;
+import fr.oliweb.mandoline.repository.RemplacementRepository;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,10 +19,12 @@ public class IngredientUtilisateurMapper {
         IngredientUtilisateurDTO dto = new IngredientUtilisateurDTO();
         dto.setEviter(db.getEviter());
         dto.setUtilisateur(UtilisateurMapper.toDto(db.getUtilisateur()));
-        dto.setIngredient(IngredientMapper.toDto(db.getIngredient(), null));
+        dto.setIngredient(IngredientMapper.toDto(db.getIngredient()));
         dto.setPrixUnite(db.getPrixUnite());
         dto.setPrixKilo(db.getPrixKilo());
-
+        dto.setSaison(Arrays.stream(db.getSaison().split(","))
+                .map(Integer::parseInt)
+                .toList());
         return dto;
     }
 
@@ -34,15 +38,17 @@ public class IngredientUtilisateurMapper {
         db.setEviter(dto.getEviter());
         db.setPrixKilo(dto.getPrixKilo());
         db.setPrixUnite(dto.getPrixUnite());
-
         db.setUtilisateur(UtilisateurMapper.toDb(dto.getUtilisateur()));
         db.setIngredient(IngredientMapper.toDb(dto.getIngredient()));
-
+        db.setSaison(dto.getSaison()
+                .stream()
+                .map(String::valueOf)
+                .collect(Collectors.joining(",")));
         return db;
     }
 
     // Convert a List of IngredientUtilisateurDb to a List of IngredientUtilisateurDTO
-    public static List<IngredientUtilisateurDTO> toDtoList(List<IngredientUtilisateurDb> dbs) {
+    public static List<IngredientUtilisateurDTO> toDtoList(List<IngredientUtilisateurDb> dbs, RemplacementRepository remplacementRepository) {
         if (dbs == null || dbs.isEmpty()) {
             return null;
         }

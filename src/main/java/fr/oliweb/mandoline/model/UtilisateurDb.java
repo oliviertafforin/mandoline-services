@@ -28,6 +28,18 @@ public class UtilisateurDb implements UserDetails {
     @JoinColumn(name = "role")
     private RoleDb role;
 
+    @OneToOne
+    @JoinColumn(name = "avatar", referencedColumnName = "id")
+    private ImageDb avatar;
+
+    public ImageDb getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(ImageDb avatar) {
+        this.avatar = avatar;
+    }
+
     public void setId(UUID id) {
         this.id = id;
     }

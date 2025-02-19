@@ -2,10 +2,11 @@ package fr.oliweb.mandoline.mappers;
 
 import fr.oliweb.mandoline.dtos.RecetteDTO;
 import fr.oliweb.mandoline.model.RecetteDb;
-import fr.oliweb.mandoline.repository.ImageRepository;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class RecetteMapper {
 
@@ -59,5 +60,13 @@ public class RecetteMapper {
         }
 
         return recette;
+    }
+
+    // Convert a list of RecetteDb entities to a list of RecetteDTO
+    public static List<RecetteDTO> toDtoList(List<RecetteDb> dbs) {
+        if (dbs == null || dbs.isEmpty()) {
+            return null;
+        }
+        return dbs.stream().map(RecetteMapper::toDto).collect(Collectors.toList());
     }
 }

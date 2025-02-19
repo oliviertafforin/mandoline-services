@@ -27,6 +27,18 @@ public class IngredientUtilisateurDb {
     @Column(name = "eviter")
     private Boolean eviter;
 
+    @Column(name="saison")
+    private String saison;
+
+    public String getSaison() {
+        return saison;
+    }
+
+    public void setSaison(String saison) {
+        this.saison = saison;
+    }
+
+
     public IngredientUtilisateurPk getPk() {
         return pk;
     }
