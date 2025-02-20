@@ -37,7 +37,7 @@ public class RechercheService {
                 .map(ingredient -> new ResultatRechercheDTO(
                         ingredient.getId(),
                         ingredient.getNom(),
-                        "ingredient",
+                        "ingredients",
                         ingredient.getNom(),
                         ingredient.getImage()
                 )).toList());
@@ -48,8 +48,8 @@ public class RechercheService {
                 .map(recette -> new ResultatRechercheDTO(
                         recette.getId(),
                         recette.getNom(),
-                        "recette",
-                        recette.getInstructions().length() > 50 ? recette.getInstructions().substring(50) + "..." : recette.getInstructions(),
+                        "recettes",
+                        recette.getInstructions().length() > 50 ? recette.getInstructions().substring(0,50) + "..." : recette.getInstructions(),
                         recette.getImage()
                 )).toList());
 
@@ -59,7 +59,7 @@ public class RechercheService {
                 .map(utilisateur -> new ResultatRechercheDTO(
                         utilisateur.getId(),
                         utilisateur.getPseudo(),
-                        "utilisateur",
+                        "utilisateurs",
                         "",
                         utilisateur.getAvatar()
                 )).toList());
@@ -75,7 +75,7 @@ public class RechercheService {
                 .map(ingredient -> new ResultatRechercheDTO(
                         ingredient.getId(),
                         ingredient.getNom(),
-                        "ingredient",
+                        "ingredients",
                         ingredient.getNom(),
                         ingredient.getImage()
                 )).toList());
@@ -86,7 +86,7 @@ public class RechercheService {
                 .map(recette -> new ResultatRechercheDTO(
                         recette.getId(),
                         recette.getNom(),
-                        "recette",
+                        "recettes",
                         recette.getInstructions().length() > 50 ? recette.getInstructions().substring(50) + "..." : recette.getInstructions(),
                         recette.getImage()
                 )).toList());
@@ -97,7 +97,7 @@ public class RechercheService {
                 .map(utilisateur -> new ResultatRechercheDTO(
                         utilisateur.getId(),
                         utilisateur.getPseudo(),
-                        "utilisateur",
+                        "utilisateurs",
                        "",
                         utilisateur.getAvatar()
                 )).toList());
