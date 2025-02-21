@@ -3,6 +3,7 @@ package fr.oliweb.mandoline.mappers;
 import fr.oliweb.mandoline.dtos.UtilisateurDTO;
 import fr.oliweb.mandoline.model.UtilisateurDb;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,7 +41,7 @@ public class UtilisateurMapper {
     // Convert a list of UtilisateurDb entities to a list of UtilisateurDtos
     public static List<UtilisateurDTO> toDtoList(List<UtilisateurDb> dbs) {
         if (dbs == null || dbs.isEmpty()) {
-            return null;
+            return new ArrayList<>();
         }
         return dbs.stream().map(UtilisateurMapper::toDto).collect(Collectors.toList());
     }

@@ -5,8 +5,8 @@ import fr.oliweb.mandoline.service.RechercheService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -20,7 +20,7 @@ public class RechercheController {
     private RechercheService searchService;
 
     @GetMapping("/{query}")
-    public List<ResultatRechercheDTO> recherche(@RequestParam String query) {
+    public List<ResultatRechercheDTO> recherche(@PathVariable String query) {
         return searchService.recherche(query);
     }
 

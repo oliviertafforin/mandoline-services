@@ -1,6 +1,5 @@
 package fr.oliweb.mandoline.dtos;
 
-import fr.oliweb.mandoline.model.RecetteIngredientDb;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -19,7 +18,14 @@ public class IngredientDTO {
     private ImageDTO image;
 
     @Schema(description = "Recettes")
-    private List<RecetteIngredientDb> recetteIngredients;
+    private List<RecetteIngredientDTO> recetteIngredients;
+
+    public IngredientDTO(UUID id) {
+        this.id = id;
+    }
+
+    public IngredientDTO() {
+    }
 
     public UUID getId() {
         return id;
@@ -45,11 +51,11 @@ public class IngredientDTO {
         this.image = image;
     }
 
-    public List<RecetteIngredientDb> getRecetteIngredients() {
+    public List<RecetteIngredientDTO> getRecetteIngredients() {
         return recetteIngredients;
     }
 
-    public void setRecetteIngredients(List<RecetteIngredientDb> recetteIngredients) {
+    public void setRecetteIngredients(List<RecetteIngredientDTO> recetteIngredients) {
         this.recetteIngredients = recetteIngredients;
     }
 }

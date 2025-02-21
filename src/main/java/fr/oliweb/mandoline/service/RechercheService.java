@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class RechercheService {
@@ -49,7 +48,7 @@ public class RechercheService {
                         recette.getId(),
                         recette.getNom(),
                         "recettes",
-                        recette.getInstructions().length() > 50 ? recette.getInstructions().substring(0,50) + "..." : recette.getInstructions(),
+                        recette.getInstructions().length() > 50 ? recette.getInstructions().substring(0, 50) + "..." : recette.getInstructions(),
                         recette.getImage()
                 )).toList());
 
@@ -87,7 +86,7 @@ public class RechercheService {
                         recette.getId(),
                         recette.getNom(),
                         "recettes",
-                        recette.getInstructions().length() > 50 ? recette.getInstructions().substring(50) + "..." : recette.getInstructions(),
+                        recette.getInstructions().length() > 50 ? recette.getInstructions().substring(0, 50) + "..." : recette.getInstructions(),
                         recette.getImage()
                 )).toList());
 
@@ -98,7 +97,7 @@ public class RechercheService {
                         utilisateur.getId(),
                         utilisateur.getPseudo(),
                         "utilisateurs",
-                       "",
+                        "",
                         utilisateur.getAvatar()
                 )).toList());
 

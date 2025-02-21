@@ -2,8 +2,8 @@ package fr.oliweb.mandoline.mappers;
 
 import fr.oliweb.mandoline.dtos.RecetteIngredientDTO;
 import fr.oliweb.mandoline.model.RecetteIngredientDb;
-import fr.oliweb.mandoline.repository.ImageRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,7 +42,7 @@ public class RecetteIngredientMapper {
     // Convert a List of RecetteIngredient to a List of RecetteIngredientDTO
     public static List<RecetteIngredientDTO> toDtoList(List<RecetteIngredientDb> dbs) {
         if (dbs == null || dbs.isEmpty()) {
-            return null;
+            return new ArrayList<>();
         }
 
         return dbs.stream().map(RecetteIngredientMapper::toDto).collect(Collectors.toList());
@@ -51,7 +51,7 @@ public class RecetteIngredientMapper {
     // Convert a List of RecetteIngredientDTO to a List of RecetteIngredient
     public static List<RecetteIngredientDb> toEntityList(List<RecetteIngredientDTO> dtos) {
         if (dtos == null || dtos.isEmpty()) {
-            return null;
+            return new ArrayList<>();
         }
 
         return dtos.stream().map(RecetteIngredientMapper::toEntity).collect(Collectors.toList());

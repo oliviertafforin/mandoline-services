@@ -2,6 +2,7 @@ package fr.oliweb.mandoline.controller;
 
 import fr.oliweb.mandoline.dtos.IngredientDTO;
 import fr.oliweb.mandoline.dtos.IngredientUtilisateurDTO;
+import fr.oliweb.mandoline.dtos.UtilisateurDTO;
 import fr.oliweb.mandoline.service.IngredientService;
 import fr.oliweb.mandoline.service.IngredientUtilisateurService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -49,6 +50,23 @@ public class IngredientController {
         return ingredientUtilisateurService.getIngredientUtilisateurParId(id, userId)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.noContent().build());
+    }
+
+    // Mettre à jour un ingredient d'utilisateur par ID et utilisateur
+    @PutMapping("/{id}/utilisateur/{userId}")
+    @Operation(summary = "Mettre à jour un ingredient d'utilisateur", description = "Met à jour l'ingredient d'utilisateur correspondant à l'id donné")
+    public ResponseEntity<IngredientUtilisateurDTO> majIngredientUtilisateurParId(@PathVariable UUID id, @PathVariable UUID userId, @RequestBody IngredientUtilisateurDTO ingredientUtilisateurDTO) {
+        IngredientUtilisateurDTO ingredientUtilisateur = ingredientUtilisateurService.majOuCreerIngredientUtilisateur(id, userId, ingredientUtilisateurDTO);
+        return ResponseEntity.ok(ingredientUtilisateur);
+    }
+
+    // Créer un ingredient utilisateur
+    @PostMapping("/{id}/utilisateur/{userId}")
+    public ResponseEntity<IngredientUtilisateurDTO> creerIngredientUtilisateur(@PathVariable UUID id, @PathVariable UUID userId, @RequestBody IngredientUtilisateurDTO ingredientUtilisateurDTO) {
+        ingredientUtilisateurDTO.setUtilisateur(new UtilisateurDTO(userId));
+        ingredientUtilisateurDTO.setIngredient(new IngredientDTO(id));
+        IngredientUtilisateurDTO ingredient = ingredientUtilisateurService.creerIngredientUtilisateur(ingredientUtilisateurDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ingredient);
     }
 
     // Créer un ingredient

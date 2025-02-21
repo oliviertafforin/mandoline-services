@@ -1,5 +1,6 @@
 package fr.oliweb.mandoline.config;
 
+import fr.oliweb.mandoline.model.UtilisateurDb;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -37,10 +38,11 @@ public class JwtUtil {
                 .getPayload();
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(UtilisateurDb userDetails) {
         return Jwts.builder()
                 .subject(userDetails.getUsername())
                 .claim("roles", userDetails.getAuthorities())
+                .claim("id", userDetails.getId())
                 .issuedAt(new Date(System.currentTimeMillis()))
 //                .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME)) //essai sans expiration
                 .signWith(getSigningKey())
@@ -49,7 +51,7 @@ public class JwtUtil {
 
     public boolean validateToken(String token, UserDetails userDetails) {
         final String pseudo = extractPseudo(token);
-        return pseudo.equals(userDetails.getUsername()) ;
+        return pseudo.equals(userDetails.getUsername());
         //&& !isTokenExpired(token);
     }
 

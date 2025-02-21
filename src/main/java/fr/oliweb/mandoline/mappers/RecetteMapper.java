@@ -65,7 +65,7 @@ public class RecetteMapper {
     // Convert a list of RecetteDb entities to a list of RecetteDTO
     public static List<RecetteDTO> toDtoList(List<RecetteDb> dbs) {
         if (dbs == null || dbs.isEmpty()) {
-            return null;
+            return new ArrayList<>();
         }
         return dbs.stream().map(RecetteMapper::toDto).collect(Collectors.toList());
     }

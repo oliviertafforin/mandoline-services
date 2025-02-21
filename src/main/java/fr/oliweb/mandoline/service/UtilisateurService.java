@@ -12,7 +12,6 @@ import fr.oliweb.mandoline.repository.UtilisateurRepository;
 import jakarta.validation.ValidationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -79,11 +78,11 @@ public class UtilisateurService {
                 loginRequest.getPseudo(), loginRequest.getMdp()));
 
         // Récupération de l'utilisateur
-        UserDetails utilisateur = repository.findByPseudo(loginRequest.getPseudo())
+        UtilisateurDb utilisateurDb = repository.findByPseudo(loginRequest.getPseudo())
                 .orElseThrow(() -> new ValidationException("Utilisateur non trouvé"));
 
         // Génération du token JWT
-        return jwtUtil.generateToken(utilisateur);
+        return jwtUtil.generateToken(utilisateurDb);
     }
 
     /**

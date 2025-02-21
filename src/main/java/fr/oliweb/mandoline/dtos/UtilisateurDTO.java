@@ -10,6 +10,13 @@ public class UtilisateurDTO {
     private String mdp;
     private ImageDTO avatar;
 
+    public UtilisateurDTO() {
+    }
+
+    public UtilisateurDTO(UUID id) {
+        this.id = id;
+    }
+
     public RoleDTO getRole() {
         return role;
     }
