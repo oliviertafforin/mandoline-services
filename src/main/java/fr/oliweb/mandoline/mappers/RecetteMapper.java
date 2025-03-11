@@ -43,7 +43,7 @@ public class RecetteMapper {
             return null;
         }
         RecetteDb recette = new RecetteDb();
-        if (recette.getId() != null) {
+        if (dto.getId() != null) {
             recette.setId(dto.getId());
         }
         recette.setNom(dto.getNom());

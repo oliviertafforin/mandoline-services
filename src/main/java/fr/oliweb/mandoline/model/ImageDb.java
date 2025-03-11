@@ -17,7 +17,7 @@ public class ImageDb {
     @Column(name = "libelle")
     private String libelle;
 
-    @Column(name = "url")
+    @Column(name = "url", length = 2000)
     private String url;
 
     public void setId(UUID id) {
