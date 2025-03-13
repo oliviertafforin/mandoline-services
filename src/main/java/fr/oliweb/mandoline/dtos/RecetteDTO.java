@@ -13,10 +13,12 @@ public class RecetteDTO {
 
     @Schema(description = "Nom de la recette", example = "Cake à la fraise")
     private String nom;
-    @Schema(description = "Instructions de préparation de la recette", example = "lorem ipsum dolor sit amet")
-    private String instructions;
+    @Schema(description = "Texte d'intro de la recette", example = "lorem ipsum dolor sit amet")
+    private String introduction;
     @Schema(description = "Température du plat (chaude : 1, froide : 2, les deux : 0)", example = "2")
     private Integer temperature;
+    @Schema(description = "Nombre de personnes pour laquelle la recette est prévue", example = "2")
+    private Integer nbPersonnes;
     @Schema(description = "Temps de préparation de la recette", example = "20")
     private Integer tpsPrepa;
     @Schema(description = "Temps de cuisson de la recette", example = "45")
@@ -61,12 +63,20 @@ public class RecetteDTO {
         this.nom = nom;
     }
 
-    public String getInstructions() {
-        return instructions;
+    public String getIntroduction() {
+        return introduction;
     }
 
-    public void setInstructions(String instructions) {
-        this.instructions = instructions;
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
+    }
+
+    public Integer getNbPersonnes() {
+        return nbPersonnes;
+    }
+
+    public void setNbPersonnes(Integer nbPersonnes) {
+        this.nbPersonnes = nbPersonnes;
     }
 
     public Integer getTemperature() {

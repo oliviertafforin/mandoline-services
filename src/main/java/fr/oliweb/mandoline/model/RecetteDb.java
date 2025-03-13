@@ -18,11 +18,14 @@ public class RecetteDb {
     @Column(name = "nom")
     private String nom;
 
-    @Column(name = "instructions")
-    private String instructions;
+    @Column(name = "introduction")
+    private String introduction;
 
     @Column(name = "temperature")
     private Integer temperature;
+
+    @Column(name = "nbPersonnes")
+    private Integer nbPersonnes;
 
     @Column(name = "tps_prepa")
     private Integer tpsPrepa;
@@ -40,6 +43,22 @@ public class RecetteDb {
 
     @OneToMany(mappedBy = "recette", fetch = FetchType.EAGER)
     private Set<RecetteIngredientDb> recetteIngredients;
+
+    public String getIntroduction() {
+        return introduction;
+    }
+
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
+    }
+
+    public Integer getNbPersonnes() {
+        return nbPersonnes;
+    }
+
+    public void setNbPersonnes(Integer nbPersonnes) {
+        this.nbPersonnes = nbPersonnes;
+    }
 
     public ImageDb getImage() {
         return image;
@@ -63,14 +82,6 @@ public class RecetteDb {
 
     public void setNom(String nom) {
         this.nom = nom;
-    }
-
-    public String getInstructions() {
-        return instructions;
-    }
-
-    public void setInstructions(String instructions) {
-        this.instructions = instructions;
     }
 
     public Integer getTemperature() {

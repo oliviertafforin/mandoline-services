@@ -48,7 +48,7 @@ public class RechercheService {
                         recette.getId(),
                         recette.getNom(),
                         "recettes",
-                        recette.getInstructions().length() > 50 ? recette.getInstructions().substring(0, 50) + "..." : recette.getInstructions(),
+                        recette.getIntroduction().length() > 50 ? recette.getIntroduction().substring(0, 50) + "..." : recette.getIntroduction(),
                         recette.getImage()
                 )).toList());
 
@@ -86,7 +86,7 @@ public class RechercheService {
                         recette.getId(),
                         recette.getNom(),
                         "recettes",
-                        recette.getInstructions().length() > 50 ? recette.getInstructions().substring(0, 50) + "..." : recette.getInstructions(),
+                        recette.getIntroduction().length() > 50 ? recette.getIntroduction().substring(0, 50) + "..." : recette.getIntroduction(),
                         recette.getImage()
                 )).toList());
 
