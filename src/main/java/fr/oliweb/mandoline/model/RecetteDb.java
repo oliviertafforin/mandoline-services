@@ -30,7 +30,7 @@ public class RecetteDb {
     @Column(name = "tps_prepa")
     private Integer tpsPrepa;
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "image", referencedColumnName = "id")
     private ImageDb image;
 
