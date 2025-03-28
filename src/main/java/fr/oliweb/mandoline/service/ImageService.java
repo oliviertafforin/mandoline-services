@@ -3,6 +3,7 @@ package fr.oliweb.mandoline.service;
 import fr.oliweb.mandoline.dtos.ImageDTO;
 import fr.oliweb.mandoline.model.ImageDb;
 import fr.oliweb.mandoline.repository.ImageRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -12,6 +13,10 @@ import java.util.UUID;
 public class ImageService {
 
     private final ImageRepository repository;
+
+    @Value("${file.upload-dir}")
+    private String uploadDir;
+
 
     public ImageService(ImageRepository repository) {
         this.repository = repository;
@@ -31,7 +36,7 @@ public class ImageService {
         return repository.findById(id).map(image -> {
             ImageDb imageMaj = toEntity(imageDTO);
             imageMaj.setId(image.getId());
-            return toDTO(repository.save(image));
+            return toDTO(repository.save(imageMaj));
         }).orElseThrow(() -> new RuntimeException("Image introuvable"));
     }
 
@@ -47,7 +52,7 @@ public class ImageService {
         ImageDTO imageDTO = new ImageDTO();
         imageDTO.setId(image.getId());
         imageDTO.setLibelle(image.getLibelle());
-        imageDTO.setUrl(image.getUrl());
+        imageDTO.setPath(image.getPath());
         return imageDTO;
     }
 
@@ -57,7 +62,7 @@ public class ImageService {
         if (imageDTO.getId() != null) {
             image.setId(imageDTO.getId());
         }
-        image.setUrl(imageDTO.getUrl());
+        image.setPath(imageDTO.getPath());
         image.setLibelle(imageDTO.getLibelle());
         return image;
     }

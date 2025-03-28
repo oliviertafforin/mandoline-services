@@ -13,7 +13,7 @@ public class ImageMapper {
         ImageDTO dto = new ImageDTO();
         dto.setId(db.getId());
         dto.setLibelle(db.getLibelle());
-        dto.setUrl(db.getUrl());
+        dto.setPath(db.getPath());
 
         return dto;
     }
@@ -27,7 +27,7 @@ public class ImageMapper {
         ImageDb image = new ImageDb();
         image.setId(dto.getId());
         image.setLibelle(dto.getLibelle());
-        image.setUrl(dto.getUrl());
+        image.setPath(dto.getPath());
 
         return image;
     }

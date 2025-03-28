@@ -13,8 +13,8 @@ public class ImageDTO {
     @Schema(description = "Libellé de l'image", example = "Cake à la fraise")
     private String libelle;
 
-    @Schema(description = "URL de l'image", example = "https://liliebakery.fr/layer-cake-fraise/")
-    private String url;
+    @Schema(description = "chemin d'accès de l'image", example = "avatars/123_456_789.png")
+    private String path;
 
     public UUID getId() {
         return id;
@@ -32,11 +32,11 @@ public class ImageDTO {
         this.libelle = libelle;
     }
 
-    public String getUrl() {
-        return url;
+    public String getPath() {
+        return path;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setPath(String path) {
+        this.path = path;
     }
 }

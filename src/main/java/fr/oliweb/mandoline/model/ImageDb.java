@@ -17,8 +17,8 @@ public class ImageDb {
     @Column(name = "libelle")
     private String libelle;
 
-    @Column(name = "url", length = 2000)
-    private String url;
+    @Column(name = "path", length = 2000)
+    private String path;
 
     public void setId(UUID id) {
         this.id = id;
@@ -36,11 +36,11 @@ public class ImageDb {
         this.libelle = libelle;
     }
 
-    public String getUrl() {
-        return url;
+    public String getPath() {
+        return path;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setPath(String path) {
+        this.path = path;
     }
 }

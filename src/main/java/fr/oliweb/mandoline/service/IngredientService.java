@@ -41,10 +41,10 @@ public class IngredientService {
         return repository.findById(id).map(updated -> {
             IngredientDb db = IngredientMapper.toDb(ingredientDTO);
             updated.setNom(db.getNom());
-            if (!updated.getImage().getUrl().equals(db.getImage().getUrl())) {
+            if (!updated.getImage().getPath().equals(db.getImage().getPath())) {
                 ImageDb nouvelleImage = new ImageDb();
                 nouvelleImage.setLibelle(db.getNom());
-                nouvelleImage.setUrl(db.getImage().getUrl());
+                nouvelleImage.setPath(db.getImage().getPath());
                 updated.setImage(imageRepository.save(nouvelleImage));
             }
             updated.setRecetteIngredients(db.getRecetteIngredients());
