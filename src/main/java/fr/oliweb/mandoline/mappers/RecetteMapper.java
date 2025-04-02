@@ -20,6 +20,8 @@ public class RecetteMapper {
         dto.setNom(db.getNom());
         dto.setId(db.getId());
         dto.setIntroduction(db.getIntroduction());
+        dto.setCategorie(db.getCategorie());
+        dto.setEtapes(db.getEtapes());
         dto.setNbPersonnes(db.getNbPersonnes());
         dto.setTemperature(db.getTemperature());
         dto.setTpsPrepa(db.getTpsPrepa());
@@ -52,6 +54,8 @@ public class RecetteMapper {
         recette.setNbPersonnes(dto.getNbPersonnes());
         recette.setTemperature(dto.getTemperature());
         recette.setTpsPrepa(dto.getTpsPrepa());
+        recette.setEtapes(dto.getEtapes());
+        recette.setCategorie(dto.getCategorie());
         recette.setTpsCuisson(dto.getTpsCuisson());
         recette.setProprietaire(UtilisateurMapper.toDb(dto.getProprietaire()));
         recette.setImage(ImageMapper.toDb(dto.getImage()));

@@ -43,7 +43,6 @@ public class RecetteService {
     public RecetteDTO majRecette(UUID id, RecetteDTO recetteDTO) {
         return repository.findById(id).map(recette -> {
             RecetteDb recetteMaj = toDb(recetteDTO);
-            recetteMaj.setId(recette.getId());
             return toDto(repository.save(recetteMaj));
         }).orElseThrow(() -> new RuntimeException("Recette introuvable"));
     }

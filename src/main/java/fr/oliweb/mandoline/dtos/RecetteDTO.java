@@ -27,6 +27,10 @@ public class RecetteDTO {
     private UtilisateurDTO proprietaire;
     @Schema(description = "Image de couverture de la recette")
     private ImageDTO image;
+    @Schema(description = "Tableau JSON détaillant chaque étape de la préparation")
+    private String etapes;
+    @Schema(description = "Catégorie de la recette", examples = {  "Apéritif","Boissons","Bases","Plats","Entrées","Desserts"})
+    private String categorie;
 
     @Schema(description = "Ingredients")
     private List<RecetteIngredientDTO> recetteIngredients;
@@ -55,6 +59,14 @@ public class RecetteDTO {
         this.id = id;
     }
 
+    public String getCategorie() {
+        return categorie;
+    }
+
+    public void setCategorie(String categorie) {
+        this.categorie = categorie;
+    }
+
     public String getNom() {
         return nom;
     }
@@ -69,6 +81,14 @@ public class RecetteDTO {
 
     public void setIntroduction(String introduction) {
         this.introduction = introduction;
+    }
+
+    public String getEtapes() {
+        return etapes;
+    }
+
+    public void setEtapes(String etapes) {
+        this.etapes = etapes;
     }
 
     public Integer getNbPersonnes() {

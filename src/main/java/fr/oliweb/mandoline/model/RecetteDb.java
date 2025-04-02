@@ -30,12 +30,18 @@ public class RecetteDb {
     @Column(name = "tps_prepa")
     private Integer tpsPrepa;
 
-    @OneToOne(cascade = {CascadeType.ALL})
+    @OneToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "image", referencedColumnName = "id")
     private ImageDb image;
 
     @Column(name = "tps_cuisson")
     private Integer tpsCuisson;
+
+    @Column(name = "etapes")
+    private String etapes;
+
+    @Column(name = "categorie")
+    private String categorie;
 
     @ManyToOne
     @JoinColumn(name = "proprietaire")
@@ -43,6 +49,14 @@ public class RecetteDb {
 
     @OneToMany(mappedBy = "recette", fetch = FetchType.EAGER)
     private Set<RecetteIngredientDb> recetteIngredients;
+
+    public String getCategorie() {
+        return categorie;
+    }
+
+    public void setCategorie(String categorie) {
+        this.categorie = categorie;
+    }
 
     public String getIntroduction() {
         return introduction;
@@ -114,6 +128,14 @@ public class RecetteDb {
 
     public void setRecetteIngredients(Set<RecetteIngredientDb> recetteIngredients) {
         this.recetteIngredients = recetteIngredients;
+    }
+
+    public String getEtapes() {
+        return etapes;
+    }
+
+    public void setEtapes(String etapes) {
+        this.etapes = etapes;
     }
 
     public UtilisateurDb getProprietaire() {
