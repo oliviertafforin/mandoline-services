@@ -6,6 +6,7 @@ import fr.oliweb.mandoline.dtos.RoleDTO;
 import fr.oliweb.mandoline.dtos.UtilisateurDTO;
 import fr.oliweb.mandoline.enums.RoleEnum;
 import fr.oliweb.mandoline.mappers.RoleMapper;
+import fr.oliweb.mandoline.mappers.UtilisateurMapper;
 import fr.oliweb.mandoline.model.UtilisateurDb;
 import fr.oliweb.mandoline.repository.RoleRepository;
 import fr.oliweb.mandoline.repository.UtilisateurRepository;
@@ -38,12 +39,12 @@ public class UtilisateurService {
 
     public List<UtilisateurDTO> getAllUtilisateurs() {
         return repository.findAll().stream()
-                .map(this::toDTO)
+                .map(UtilisateurMapper::toDto)
                 .toList();
     }
 
     public Optional<UtilisateurDTO> getUtilisateurParId(UUID id) {
-        return repository.findById(id).map(this::toDTO);
+        return repository.findById(id).map(UtilisateurMapper::toDto);
     }
 
     /**
@@ -92,16 +93,16 @@ public class UtilisateurService {
      * @return
      */
     public UtilisateurDTO creerUtilisateur(UtilisateurDTO utilisateurDTO) {
-        UtilisateurDb utilisateur = toEntity(utilisateurDTO);
+        UtilisateurDb utilisateur = UtilisateurMapper.toDb(utilisateurDTO);
         UtilisateurDb utilisateurEnregistre = repository.save(utilisateur);
-        return toDTO(utilisateurEnregistre);
+        return UtilisateurMapper.toDto(utilisateurEnregistre);
     }
 
     public UtilisateurDTO majUtilisateur(UUID id, UtilisateurDTO utilisateurDTO) {
         return repository.findById(id).map(utilisateur -> {
-            UtilisateurDb utilisateurMaj = toEntity(utilisateurDTO);
+            UtilisateurDb utilisateurMaj = UtilisateurMapper.toDb(utilisateurDTO);
             utilisateurMaj.setId(utilisateur.getId());
-            return toDTO(repository.save(utilisateur));
+            return UtilisateurMapper.toDto(repository.save(utilisateur));
         }).orElseThrow(() -> new RuntimeException("Recette introuvable"));
     }
 
@@ -110,28 +111,6 @@ public class UtilisateurService {
             throw new RuntimeException("Utilisateur introuvable");
         }
         repository.deleteById(id);
-    }
-
-    // Mapper pour transformer une entité en DTO
-    private UtilisateurDTO toDTO(UtilisateurDb utilisateur) {
-        UtilisateurDTO utilisateurDTO = new UtilisateurDTO();
-        utilisateurDTO.setId(utilisateur.getId());
-        utilisateurDTO.setPseudo(utilisateur.getPseudo());
-        utilisateurDTO.setMdp(utilisateur.getMdp());
-        utilisateurDTO.setRole(RoleMapper.toDto(utilisateur.getRole()));
-        return utilisateurDTO;
-    }
-
-    // Mapper pour transformer un DTO en entité
-    private UtilisateurDb toEntity(UtilisateurDTO utilisateurDTO) {
-        UtilisateurDb utilisateur = new UtilisateurDb();
-        if (utilisateurDTO.getId() != null) {
-            utilisateur.setId(utilisateurDTO.getId());
-        }
-        utilisateur.setPseudo(utilisateurDTO.getPseudo());
-        utilisateur.setMdp(utilisateurDTO.getMdp());
-        utilisateur.setRole(RoleMapper.toDb(utilisateurDTO.getRole()));
-        return utilisateur;
     }
 }
 

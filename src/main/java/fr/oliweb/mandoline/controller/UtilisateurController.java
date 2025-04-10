@@ -1,6 +1,8 @@
 package fr.oliweb.mandoline.controller;
 
+import fr.oliweb.mandoline.dtos.RecetteDTO;
 import fr.oliweb.mandoline.dtos.UtilisateurDTO;
+import fr.oliweb.mandoline.service.RecetteLikeeService;
 import fr.oliweb.mandoline.service.UtilisateurService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +16,11 @@ import java.util.UUID;
 public class UtilisateurController {
 
     private final UtilisateurService utilisateurService;
+    private final RecetteLikeeService recetteLikeeService;
 
-    public UtilisateurController(UtilisateurService utilisateurService) {
+    public UtilisateurController(UtilisateurService utilisateurService, RecetteLikeeService recetteLikeeService) {
         this.utilisateurService = utilisateurService;
+        this.recetteLikeeService = recetteLikeeService;
     }
 
     // Récupérer tous les utilisateurs
@@ -33,6 +37,25 @@ public class UtilisateurController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    // Récupérer les recettes préférées d'un utilisateur par son ID
+    @GetMapping("/{id}/recettes-preferees")
+    public ResponseEntity<List<RecetteDTO>> getRecettesPrefereesParUtilisateur(@PathVariable UUID id) {
+        return utilisateurService.getUtilisateurParId(id)
+                .map(utilisateurDTO -> {
+                    List<RecetteDTO> recettesPreferees = recetteLikeeService.getRecettesPreferees(utilisateurDTO);
+                    return ResponseEntity.ok(recettesPreferees);
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    // Récupérer les recettes préférées d'un utilisateur par son ID
+    @PostMapping("/{idUtilisateur}/recettes-preferees/{idRecette}")
+    public ResponseEntity<Void> likeRecette(@PathVariable UUID idUtilisateur, @PathVariable UUID idRecette) {
+        recetteLikeeService.likeRecette(idUtilisateur, idRecette);
+        return ResponseEntity.ok().build();
+    }
+
 
     // Créer un utilisateur
     @PostMapping
