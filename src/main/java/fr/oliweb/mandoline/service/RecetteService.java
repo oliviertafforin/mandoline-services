@@ -3,8 +3,10 @@ package fr.oliweb.mandoline.service;
 import fr.oliweb.mandoline.dtos.RecetteDTO;
 import fr.oliweb.mandoline.mappers.RecetteMapper;
 import fr.oliweb.mandoline.model.RecetteDb;
-import fr.oliweb.mandoline.repository.ImageRepository;
 import fr.oliweb.mandoline.repository.RecetteRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,6 +29,15 @@ public class RecetteService {
         return repository.findAll().stream()
                 .map(RecetteMapper::toDto)
                 .toList();
+    }
+
+    public Page<RecetteDTO> getAllRecettes(Pageable pageable) {
+        Page<RecetteDb> result = repository.findAll(pageable);
+        PageImpl<RecetteDTO> recetteDTOS = new PageImpl<>(result
+                .stream()
+                .map(RecetteMapper::toDto)
+                .toList(), pageable, result.getTotalElements());
+        return recetteDTOS;
     }
 
 
