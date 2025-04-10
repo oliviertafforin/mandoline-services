@@ -6,6 +6,9 @@ import fr.oliweb.mandoline.model.ImageDb;
 import fr.oliweb.mandoline.model.IngredientDb;
 import fr.oliweb.mandoline.repository.ImageRepository;
 import fr.oliweb.mandoline.repository.IngredientRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,6 +32,15 @@ public class IngredientService {
 
     public List<IngredientDTO> getAllIngredients() {
         return IngredientMapper.toDtoList(repository.findAll());
+    }
+
+    public Page<IngredientDTO> getAllIngredients(Pageable pageable) {
+        Page<IngredientDb> result = repository.findAll(pageable);
+        PageImpl<IngredientDTO> ingredientDTOS = new PageImpl<>(result
+                .stream()
+                .map(IngredientMapper::toDto)
+                .toList(), pageable, result.getTotalElements());
+        return ingredientDTOS;
     }
 
     public IngredientDTO creerIngredient(IngredientDTO ingredientDTO) {
