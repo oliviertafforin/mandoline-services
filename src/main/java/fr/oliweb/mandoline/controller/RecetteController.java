@@ -5,7 +5,6 @@ import fr.oliweb.mandoline.service.RecetteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,9 +34,11 @@ public class RecetteController {
     //Toutes les recettes, avec pagination
     @GetMapping("/pagination")
     public Page<RecetteDTO> getAllRecettesPaginees(@RequestParam(defaultValue = "0") int page,
-                                                   @RequestParam(defaultValue = "10") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return recetteService.getAllRecettes(pageable);
+                                                   @RequestParam(defaultValue = "10") int size,
+                                                   @RequestParam(required = false) String nom,
+                                                   @RequestParam(required = false) List<String> criteres,
+                                                   Pageable pageable) {
+        return recetteService.getAllRecettes(pageable, nom, criteres);
     }
 
     // Récupérer une recette par ID

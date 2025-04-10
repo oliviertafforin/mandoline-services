@@ -4,14 +4,14 @@ import fr.oliweb.mandoline.dtos.RecetteDTO;
 import fr.oliweb.mandoline.mappers.RecetteMapper;
 import fr.oliweb.mandoline.model.RecetteDb;
 import fr.oliweb.mandoline.repository.RecetteRepository;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static fr.oliweb.mandoline.mappers.RecetteMapper.toDb;
 import static fr.oliweb.mandoline.mappers.RecetteMapper.toDto;
@@ -31,13 +31,35 @@ public class RecetteService {
                 .toList();
     }
 
-    public Page<RecetteDTO> getAllRecettes(Pageable pageable) {
-        Page<RecetteDb> result = repository.findAll(pageable);
-        PageImpl<RecetteDTO> recetteDTOS = new PageImpl<>(result
-                .stream()
-                .map(RecetteMapper::toDto)
-                .toList(), pageable, result.getTotalElements());
-        return recetteDTOS;
+    public Page<RecetteDTO> getAllRecettes(Pageable pageable, String nom, List<String> criteres) {
+        List<RecetteDb> result;
+        if ((criteres == null || criteres.isEmpty()) && Strings.isBlank(nom)) {
+            result = repository.findAll(pageable).stream().toList();
+        } else {
+            List<String> criteresSimples = criteres != null ? criteres.stream()
+                    .filter(critere -> Set.of("Apéritif", "Boissons", "Bases", "Plats", "Entrées", "Desserts").contains(critere))
+                    .toList() : new ArrayList<>();
+
+            List<String> criteresAvances = criteres != null ? criteres.stream()
+                    .filter(critere -> !criteresSimples.contains(critere))
+                    .toList() : new ArrayList<>();
+
+            Specification<RecetteDb> spec = RecetteSpecificationBuilder.build(criteresSimples);
+
+            if (Strings.isNotBlank(nom)) {
+                spec = spec.and((root, query, builder) -> builder.like(builder.lower(root.get("nom")), "%" + nom.toLowerCase() + "%"));
+            }
+
+            Page<RecetteDb> page = repository.findAll(spec, pageable);
+
+
+            result = page.stream()
+                    .filter(r -> FiltreAvanceFactory.getFiltres(criteresAvances).stream().allMatch(f -> f.match(r)))
+                    .toList();
+        }
+
+        List<RecetteDTO> dtos = result.stream().map(RecetteMapper::toDto).toList();
+        return new PageImpl<>(dtos, pageable, result.size());
     }
 
 

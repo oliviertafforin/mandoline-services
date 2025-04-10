@@ -24,7 +24,7 @@ public class RecetteDb {
     @Column(name = "temperature")
     private Integer temperature;
 
-    @Column(name = "nbPersonnes")
+    @Column(name = "nb_personnes")
     private Integer nbPersonnes;
 
     @Column(name = "tps_prepa")
