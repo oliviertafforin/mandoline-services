@@ -1,6 +1,8 @@
 package fr.oliweb.mandoline.controller;
 
 import fr.oliweb.mandoline.dtos.LoginRequeteDTO;
+import fr.oliweb.mandoline.dtos.UtilisateurDTO;
+import fr.oliweb.mandoline.exceptions.RessourceEnDoubleException;
 import fr.oliweb.mandoline.service.UtilisateurService;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
@@ -22,14 +24,12 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity registerUser(@Valid @RequestBody final LoginRequeteDTO loginRequeteDTO) {
+    public ResponseEntity<UtilisateurDTO> registerUser(@Valid @RequestBody final LoginRequeteDTO loginRequeteDTO) {
         try {
-            utilisateurService.nouvelUtilisateur(loginRequeteDTO);
+            return ResponseEntity.ok(utilisateurService.nouvelUtilisateur(loginRequeteDTO));
         } catch (ValidationException ve) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(ve.getMessage());
+            throw new RessourceEnDoubleException(ve.getMessage());
         }
-
-        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/login")

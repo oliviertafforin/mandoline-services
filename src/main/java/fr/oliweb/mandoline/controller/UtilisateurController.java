@@ -2,6 +2,8 @@ package fr.oliweb.mandoline.controller;
 
 import fr.oliweb.mandoline.dtos.RecetteDTO;
 import fr.oliweb.mandoline.dtos.UtilisateurDTO;
+import fr.oliweb.mandoline.exceptions.ExceptionMessages;
+import fr.oliweb.mandoline.exceptions.RessourceIntrouvableException;
 import fr.oliweb.mandoline.service.RecetteLikeeService;
 import fr.oliweb.mandoline.service.UtilisateurService;
 import org.springframework.http.HttpStatus;
@@ -35,7 +37,7 @@ public class UtilisateurController {
     public ResponseEntity<UtilisateurDTO> getUtilisateurParId(@PathVariable UUID id) {
         return utilisateurService.getUtilisateurParId(id)
                 .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .orElseThrow(()-> new RessourceIntrouvableException(ExceptionMessages.UTILISATEUR_INTROUVABLE +", id : "+id));
     }
 
     // Récupérer les recettes préférées d'un utilisateur par son ID
@@ -46,7 +48,7 @@ public class UtilisateurController {
                     List<RecetteDTO> recettesPreferees = recetteLikeeService.getRecettesPreferees(utilisateurDTO);
                     return ResponseEntity.ok(recettesPreferees);
                 })
-                .orElse(ResponseEntity.notFound().build());
+                .orElseThrow(()-> new RessourceIntrouvableException(ExceptionMessages.UTILISATEUR_INTROUVABLE +", id : "+id));
     }
 
     // Récupérer les recettes préférées d'un utilisateur par son ID

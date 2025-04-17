@@ -5,6 +5,8 @@ import fr.oliweb.mandoline.dtos.LoginRequeteDTO;
 import fr.oliweb.mandoline.dtos.RoleDTO;
 import fr.oliweb.mandoline.dtos.UtilisateurDTO;
 import fr.oliweb.mandoline.enums.RoleEnum;
+import fr.oliweb.mandoline.exceptions.ExceptionMessages;
+import fr.oliweb.mandoline.exceptions.RessourceIntrouvableException;
 import fr.oliweb.mandoline.mappers.RoleMapper;
 import fr.oliweb.mandoline.mappers.UtilisateurMapper;
 import fr.oliweb.mandoline.model.UtilisateurDb;
@@ -80,7 +82,7 @@ public class UtilisateurService {
 
         // Récupération de l'utilisateur
         UtilisateurDb utilisateurDb = repository.findByPseudo(loginRequest.getPseudo())
-                .orElseThrow(() -> new ValidationException("Utilisateur non trouvé"));
+                .orElseThrow(() -> new RessourceIntrouvableException(ExceptionMessages.UTILISATEUR_INTROUVABLE + ", pseudo : "+ loginRequest.getPseudo()));
 
         // Génération du token JWT
         return jwtUtil.generateToken(utilisateurDb);
@@ -103,12 +105,12 @@ public class UtilisateurService {
             UtilisateurDb utilisateurMaj = UtilisateurMapper.toDb(utilisateurDTO);
             utilisateurMaj.setId(utilisateur.getId());
             return UtilisateurMapper.toDto(repository.save(utilisateur));
-        }).orElseThrow(() -> new RuntimeException("Recette introuvable"));
+        }).orElseThrow(() -> new RessourceIntrouvableException(ExceptionMessages.UTILISATEUR_INTROUVABLE + ", id : "+ id));
     }
 
     public void supprimerUtilisateur(UUID id) {
         if (!repository.existsById(id)) {
-            throw new RuntimeException("Utilisateur introuvable");
+            throw new RessourceIntrouvableException(ExceptionMessages.UTILISATEUR_INTROUVABLE + ", id : "+ id);
         }
         repository.deleteById(id);
     }

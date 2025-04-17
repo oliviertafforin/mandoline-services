@@ -1,6 +1,8 @@
 package fr.oliweb.mandoline.service;
 
 import fr.oliweb.mandoline.dtos.IngredientUtilisateurDTO;
+import fr.oliweb.mandoline.exceptions.ExceptionMessages;
+import fr.oliweb.mandoline.exceptions.RessourceIntrouvableException;
 import fr.oliweb.mandoline.mappers.IngredientMapper;
 import fr.oliweb.mandoline.mappers.IngredientUtilisateurMapper;
 import fr.oliweb.mandoline.model.*;
@@ -16,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
 
 @Service
 public class IngredientUtilisateurService {
@@ -86,7 +89,7 @@ public class IngredientUtilisateurService {
                 db.setIngredient(ingredient.get());
                 return IngredientUtilisateurMapper.toDto(repository.save(db));
             } else {
-                throw new EntityNotFoundException("Ingrédient/utilisateur introuvable");
+                throw new RessourceIntrouvableException(ExceptionMessages.INGREDIENT_UTILISATEUR_INTROUVABLE.toString());
             }
         }
     }

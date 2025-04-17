@@ -1,6 +1,8 @@
 package fr.oliweb.mandoline.controller;
 
 import fr.oliweb.mandoline.dtos.RecetteDTO;
+import fr.oliweb.mandoline.exceptions.ExceptionMessages;
+import fr.oliweb.mandoline.exceptions.RessourceIntrouvableException;
 import fr.oliweb.mandoline.service.RecetteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -47,7 +49,7 @@ public class RecetteController {
     public ResponseEntity<RecetteDTO> getRecetteParId(@PathVariable UUID id) {
         return recetteService.getRecetteParId(id)
                 .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .orElseThrow(()-> new RessourceIntrouvableException(ExceptionMessages.RECETTE_INTROUVABLE + ", id : "+id));
     }
 
     // Créer une recette

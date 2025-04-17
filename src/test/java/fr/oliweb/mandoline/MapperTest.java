@@ -115,7 +115,6 @@ public class MapperTest {
             assertNotNull(recetteDTO);
             assertEquals(recetteDb.getId(), recetteDTO.getId());
             assertEquals(recetteDb.getNom(), recetteDTO.getNom());
-            assertEquals(recetteDb.getInstructions(), recetteDTO.getInstructions());
             assertEquals(recetteDb.getTemperature(), recetteDTO.getTemperature());
             assertEquals(recetteDb.getTpsPrepa(), recetteDTO.getTpsPrepa());
             assertEquals(recetteDb.getTpsCuisson(), recetteDTO.getTpsCuisson());
@@ -130,7 +129,6 @@ public class MapperTest {
             assertNotNull(recetteDb);
             assertEquals(recetteDTO.getId(), recetteDb.getId());
             assertEquals(recetteDTO.getNom(), recetteDb.getNom());
-            assertEquals(recetteDTO.getInstructions(), recetteDb.getInstructions());
             assertEquals(recetteDTO.getTemperature(), recetteDb.getTemperature());
             assertEquals(recetteDTO.getTpsPrepa(), recetteDb.getTpsPrepa());
             assertEquals(recetteDTO.getTpsCuisson(), recetteDb.getTpsCuisson());
@@ -166,7 +164,6 @@ public class MapperTest {
             RecetteDb recetteDb = new RecetteDb();
             recetteDb.setId(UUID.randomUUID());
             recetteDb.setNom(nom);
-            recetteDb.setInstructions("Instructions");
             recetteDb.setTemperature(200);
             recetteDb.setTpsPrepa(30);
             recetteDb.setTpsCuisson(45);
@@ -178,7 +175,6 @@ public class MapperTest {
             RecetteDTO recetteDTO = new RecetteDTO();
             recetteDTO.setId(UUID.randomUUID());
             recetteDTO.setNom("Recette Test");
-            recetteDTO.setInstructions("Instructions");
             recetteDTO.setTemperature(200);
             recetteDTO.setTpsPrepa(30);
             recetteDTO.setTpsCuisson(45);

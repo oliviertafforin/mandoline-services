@@ -1,6 +1,7 @@
 package fr.oliweb.mandoline.service;
 
 import fr.oliweb.mandoline.dtos.IngredientDTO;
+import fr.oliweb.mandoline.exceptions.RessourceIntrouvableException;
 import fr.oliweb.mandoline.mappers.IngredientMapper;
 import fr.oliweb.mandoline.model.ImageDb;
 import fr.oliweb.mandoline.model.IngredientDb;
@@ -61,12 +62,12 @@ public class IngredientService {
             }
             updated.setRecetteIngredients(db.getRecetteIngredients());
             return IngredientMapper.toDto(repository.save(updated));
-        }).orElseThrow(() -> new RuntimeException("Ingrédient introuvable"));
+        }).orElseThrow(() -> new RessourceIntrouvableException("Impossible de mettre à jour l'ingrédient car il est introuvable"));
     }
 
     public void supprimerIngredient(UUID id) {
         if (!repository.existsById(id)) {
-            throw new RuntimeException("Ingredient introuvable");
+            throw new RessourceIntrouvableException("Impossible de supprimer l'ingrédient car il est introuvable");
         }
         repository.deleteById(id);
     }

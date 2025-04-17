@@ -1,6 +1,5 @@
 package fr.oliweb.mandoline;
 
-import fr.oliweb.mandoline.controller.IngredientController;
 import fr.oliweb.mandoline.model.IngredientDb;
 import fr.oliweb.mandoline.repository.ImageRepository;
 import fr.oliweb.mandoline.repository.IngredientRepository;
@@ -11,16 +10,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,7 +23,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -86,6 +81,6 @@ public class IngredientServiceTest {
             ingredientService.supprimerIngredient(id);
         });
 
-        assertEquals("Ingredient introuvable", exception.getMessage());
+        assertEquals("Impossible de supprimer l'ingrédient car il est introuvable", exception.getMessage());
     }
 }

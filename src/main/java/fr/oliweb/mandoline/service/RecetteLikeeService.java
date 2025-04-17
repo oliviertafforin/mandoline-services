@@ -2,6 +2,8 @@ package fr.oliweb.mandoline.service;
 
 import fr.oliweb.mandoline.dtos.RecetteDTO;
 import fr.oliweb.mandoline.dtos.UtilisateurDTO;
+import fr.oliweb.mandoline.exceptions.ExceptionMessages;
+import fr.oliweb.mandoline.exceptions.RessourceIntrouvableException;
 import fr.oliweb.mandoline.mappers.RecetteMapper;
 import fr.oliweb.mandoline.model.RecetteDb;
 import fr.oliweb.mandoline.model.RecetteLikeeDb;
@@ -51,9 +53,9 @@ public class RecetteLikeeService {
 
     private void saveNewRecetteLikee(UUID idUtilisateur, UUID idRecette, RecetteLikeePk pk) {
         UtilisateurDb utilisateurDb = utilisateurRepository.findById(idUtilisateur)
-                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+                .orElseThrow(() -> new RessourceIntrouvableException(ExceptionMessages.UTILISATEUR_INTROUVABLE + ", id : "+idUtilisateur));
         RecetteDb recetteDb = recetteRepository.findById(idRecette)
-                .orElseThrow(() -> new RuntimeException("Recette non trouvée"));
+                .orElseThrow(() -> new RessourceIntrouvableException(ExceptionMessages.RECETTE_INTROUVABLE + ", id : "+idUtilisateur));
         RecetteLikeeDb recetteLikeeDb = createRecetteLikeeDb(pk, utilisateurDb, recetteDb);
         repository.save(recetteLikeeDb);
     }

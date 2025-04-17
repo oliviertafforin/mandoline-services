@@ -3,6 +3,8 @@ package fr.oliweb.mandoline.controller;
 import fr.oliweb.mandoline.dtos.IngredientDTO;
 import fr.oliweb.mandoline.dtos.IngredientUtilisateurDTO;
 import fr.oliweb.mandoline.dtos.UtilisateurDTO;
+import fr.oliweb.mandoline.exceptions.ExceptionMessages;
+import fr.oliweb.mandoline.exceptions.RessourceIntrouvableException;
 import fr.oliweb.mandoline.service.IngredientService;
 import fr.oliweb.mandoline.service.IngredientUtilisateurService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -51,7 +53,7 @@ public class IngredientController {
     public ResponseEntity<IngredientDTO> getIngredientParId(@PathVariable UUID id) {
         return ingredientService.getIngredientParId(id)
                 .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .orElseThrow(()-> new RessourceIntrouvableException(ExceptionMessages.INGREDIENT_INTROUVABLE + ", id : "+id));
     }
 
     // Récupérer un ingredient d'utilisateur par ID et utilisateur
@@ -60,7 +62,7 @@ public class IngredientController {
     public ResponseEntity<IngredientUtilisateurDTO> getIngredientUtilisateurParId(@PathVariable UUID id, @PathVariable UUID userId) {
         return ingredientUtilisateurService.getIngredientUtilisateurParId(id, userId)
                 .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.noContent().build());
+                .orElseThrow(()-> new RessourceIntrouvableException(ExceptionMessages.RESSOURCE_INTROUVABLE.toString()));
     }
 
     // Mettre à jour un ingredient d'utilisateur par ID et utilisateur

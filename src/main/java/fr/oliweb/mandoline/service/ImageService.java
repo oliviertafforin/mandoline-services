@@ -1,6 +1,8 @@
 package fr.oliweb.mandoline.service;
 
 import fr.oliweb.mandoline.dtos.ImageDTO;
+import fr.oliweb.mandoline.exceptions.ExceptionMessages;
+import fr.oliweb.mandoline.exceptions.RessourceIntrouvableException;
 import fr.oliweb.mandoline.model.ImageDb;
 import fr.oliweb.mandoline.repository.ImageRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,12 +39,12 @@ public class ImageService {
             ImageDb imageMaj = toEntity(imageDTO);
             imageMaj.setId(image.getId());
             return toDTO(repository.save(imageMaj));
-        }).orElseThrow(() -> new RuntimeException("Image introuvable"));
+        }).orElseThrow(() -> new RessourceIntrouvableException(ExceptionMessages.IMAGE_INTROUVABLE + ", id : "+id));
     }
 
     public void supprimerImage(UUID id) {
         if (!repository.existsById(id)) {
-            throw new RuntimeException("Image introuvable");
+            throw new RessourceIntrouvableException(ExceptionMessages.IMAGE_INTROUVABLE + ", id : "+id);
         }
         repository.deleteById(id);
     }

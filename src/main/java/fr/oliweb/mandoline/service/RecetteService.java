@@ -1,6 +1,8 @@
 package fr.oliweb.mandoline.service;
 
 import fr.oliweb.mandoline.dtos.RecetteDTO;
+import fr.oliweb.mandoline.exceptions.ExceptionMessages;
+import fr.oliweb.mandoline.exceptions.RessourceIntrouvableException;
 import fr.oliweb.mandoline.mappers.RecetteMapper;
 import fr.oliweb.mandoline.model.RecetteDb;
 import fr.oliweb.mandoline.repository.RecetteRepository;
@@ -77,12 +79,12 @@ public class RecetteService {
         return repository.findById(id).map(recette -> {
             RecetteDb recetteMaj = toDb(recetteDTO);
             return toDto(repository.save(recetteMaj));
-        }).orElseThrow(() -> new RuntimeException("Recette introuvable"));
+        }).orElseThrow(() -> new RessourceIntrouvableException(ExceptionMessages.RECETTE_INTROUVABLE + ", id : "+id));
     }
 
     public void supprimerRecette(UUID id) {
         if (!repository.existsById(id)) {
-            throw new RuntimeException("Recette introuvable");
+            throw new RessourceIntrouvableException(ExceptionMessages.RECETTE_INTROUVABLE + ", id : "+id);
         }
         repository.deleteById(id);
     }
