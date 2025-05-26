@@ -26,12 +26,9 @@ public class SwaggerConfig {
                                 .url("https://example.com"))
                         .termsOfService("https://example.com/terms")
                         .license(new License())
-                ) .servers(List.of(
+                ).servers(List.of(
                         new Server().url("http://localhost:8080").description("Local Development Server"),
                         new Server().url("http://192.168.1.15:8080").description("'Production' Server")
-                ))
-
-
-                ;
+                ));
     }
 }
