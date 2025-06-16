@@ -2,6 +2,7 @@ package fr.oliweb.mandoline.controller;
 
 import fr.oliweb.mandoline.dtos.ResultatRechercheDTO;
 import fr.oliweb.mandoline.service.RechercheService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,11 +21,13 @@ public class RechercheController {
     private RechercheService searchService;
 
     @GetMapping("/{query}")
+    @Operation(summary = "Effectue une recherche", description = "Effectue une recherche en base (ingrédients, recettes et utilisateurs) à partir d'une chaîne de caractères")
     public List<ResultatRechercheDTO> recherche(@PathVariable String query) {
         return searchService.recherche(query);
     }
 
     @GetMapping
+    @Operation(summary = "Précharge la liste des résultats", description = "Précharge une liste de toutes les valeurs possibles à chercher (recettes, ingrédients, utilisateurs)")
     public List<ResultatRechercheDTO> prechargement() {
         return searchService.prechargement();
     }

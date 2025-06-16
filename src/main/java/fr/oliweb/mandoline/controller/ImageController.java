@@ -4,14 +4,19 @@ import fr.oliweb.mandoline.dtos.ImageDTO;
 import fr.oliweb.mandoline.exceptions.ExceptionMessages;
 import fr.oliweb.mandoline.exceptions.RessourceIntrouvableException;
 import fr.oliweb.mandoline.service.ImageService;
+import fr.oliweb.mandoline.validation.ValidUUID;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,20 +26,17 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/image")
+@RequestMapping("/api/images")
 @Tag(name = "Images", description = "API pour gérer les images")
 public class ImageController {
-
-    private final ImageService imageService;
-
     @Value("${file.upload-dir}")
     private String uploadDir;
+    private final ImageService imageService;
 
     private Logger logger = LoggerFactory.getLogger(ImageController.class);
 
@@ -44,17 +46,27 @@ public class ImageController {
 
     // Récupérer une image par ID
     @GetMapping("/{id}")
-    @Operation(summary = "Obtenir une image", description = "Renvoie l'image correspondant à l'id donné")
-    public ResponseEntity<ImageDTO> getImageParId(@PathVariable UUID id) {
+    @Operation(summary = "Obtenir les métadonnées d'une image",
+            description = "Renvoie les informations d'une image")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Image trouvée"),
+            @ApiResponse(responseCode = "404", description = "Image introuvable")
+    })
+    public ResponseEntity<ImageDTO> getImageParId(@PathVariable @ValidUUID UUID id) {
         return imageService.getImageParId(id)
                 .map(ResponseEntity::ok)
                 .orElseThrow(() -> new RessourceIntrouvableException(ExceptionMessages.IMAGE_INTROUVABLE + ", id : " + id));
     }
 
 
-    @GetMapping("/download/{id}")
-    public ResponseEntity<InputStreamResource> telechargerImage(@PathVariable UUID id) throws FileNotFoundException {
-
+    @GetMapping("/{id}/download")
+    @Operation(summary = "Télécharger une image",
+            description = "Télécharge le fichier image correspondant à l'ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Image téléchargée"),
+            @ApiResponse(responseCode = "404", description = "Image introuvable")
+    })
+    public ResponseEntity<InputStreamResource> downloadImage(@PathVariable @ValidUUID UUID id) throws IOException {
         ImageDTO image = imageService.getImageParId(id).orElseThrow(FileNotFoundException::new);
 
         // Construire le chemin du fichier en utilisant l'UUID
@@ -80,54 +92,52 @@ public class ImageController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<ImageDTO> televerserImage(@RequestParam("file") MultipartFile file, @RequestParam("id") UUID id) throws IOException {
-
-        // Générer un nom de fichier unique ou utiliser le nom d'origine
-        String fileName = file.getOriginalFilename();
-        Path filePath = Paths.get(uploadDir, fileName);
-        try {
-
-            // Sauvegarder le fichier dans le répertoire
-            Files.write(filePath, file.getBytes());
-
-            //si on retrouve l'imageDTO
-            ImageDTO majDto = imageService.getImageParId(id).map(imageDTO -> {
-                //supprimer prec image
-                try {
-                    Files.delete(Path.of(imageDTO.getPath()));
-                } catch (Exception e) {
-                    logger.error("Suppression du fichier " + imageDTO.getPath() + " échouée. Celui n'est plus utilisé, il faudrait le supprimer manuellement.");
-                }
-                //maj path
-                imageDTO.setPath(filePath.getFileName().toString());
-                imageService.majImage(id, imageDTO);
-                return imageDTO;
-            }).orElseThrow(FileNotFoundException::new);
-
-            return ResponseEntity.ok().body(majDto);
-        } catch (IOException e) {
-            throw new IOException("Fichier non trouvé : " + fileName);
-        }
+    @Operation(summary = "Uploader un fichier image",
+            description = "Upload un fichier pour une image existante")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Image uploadée avec succès"),
+            @ApiResponse(responseCode = "400", description = "Fichier invalide"),
+            @ApiResponse(responseCode = "404", description = "Image introuvable"),
+            @ApiResponse(responseCode = "413", description = "Fichier trop volumineux")
+    })
+    public ResponseEntity<ImageDTO> uploadImage(@RequestParam @ValidUUID UUID id,
+                                                @Parameter(description = "Fichier image à uploader")
+                                                @RequestParam("file") @NotNull MultipartFile file) throws IOException {
+        ImageDTO response = imageService.uploadImage(id, file);
+        return ResponseEntity.ok(response);
     }
 
-    // Créer une image
     @PostMapping
-    public ResponseEntity<ImageDTO> creerImage(@RequestBody ImageDTO imageDTO) {
-        ImageDTO image = imageService.creerImage(imageDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(image);
+    @Operation(summary = "Créer une nouvelle image",
+            description = "Crée une nouvelle entrée d'image sans fichier")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Image créée"),
+            @ApiResponse(responseCode = "400", description = "Données invalides")
+    })
+    public ResponseEntity<ImageDTO> createImage(@Valid @RequestBody ImageDTO imageDTO) {
+        ImageDTO createdImage = imageService.creerImage(imageDTO);
+        return ResponseEntity.ok().body(createdImage);
     }
 
-    // Mettre à jour un image
     @PutMapping("/{id}")
-    public ResponseEntity<ImageDTO> majImage(@PathVariable UUID id, @RequestBody ImageDTO imageDTO) {
-        ImageDTO image = imageService.majImage(id, imageDTO);
-        return ResponseEntity.ok(image);
+    @Operation(summary = "Mettre à jour une image",
+            description = "Met à jour les métadonnées d'une image")
+    public ResponseEntity<ImageDTO> updateImage(
+            @PathVariable @ValidUUID UUID id,
+            @Valid @RequestBody ImageDTO imageDTO) {
+        ImageDTO updatedImage = imageService.majImage(id, imageDTO);
+        return ResponseEntity.ok(updatedImage);
     }
 
-    // Supprimer un image
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> supprimerImage(@PathVariable UUID id) {
+    @Operation(summary = "Supprimer une image",
+            description = "Supprime une image et son fichier associé")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Image supprimée"),
+            @ApiResponse(responseCode = "404", description = "Image introuvable")
+    })
+    public ResponseEntity<Void> deleteImage(@PathVariable @ValidUUID UUID id) {
         imageService.supprimerImage(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }

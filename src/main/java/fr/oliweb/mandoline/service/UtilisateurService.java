@@ -2,6 +2,7 @@ package fr.oliweb.mandoline.service;
 
 import fr.oliweb.mandoline.config.JwtUtil;
 import fr.oliweb.mandoline.dtos.LoginRequeteDTO;
+import fr.oliweb.mandoline.dtos.RecetteDTO;
 import fr.oliweb.mandoline.dtos.RoleDTO;
 import fr.oliweb.mandoline.dtos.UtilisateurDTO;
 import fr.oliweb.mandoline.enums.RoleEnum;
@@ -30,9 +31,11 @@ public class UtilisateurService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
+    private final RecetteLikeeService recetteLikeeService;
 
-    public UtilisateurService(UtilisateurRepository repository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
+    public UtilisateurService(RecetteLikeeService recetteLikeeService, UtilisateurRepository repository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
         this.repository = repository;
+        this.recetteLikeeService = recetteLikeeService;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
@@ -82,7 +85,7 @@ public class UtilisateurService {
 
         // Récupération de l'utilisateur
         UtilisateurDb utilisateurDb = repository.findByPseudo(loginRequest.getPseudo())
-                .orElseThrow(() -> new RessourceIntrouvableException(ExceptionMessages.UTILISATEUR_INTROUVABLE + ", pseudo : "+ loginRequest.getPseudo()));
+                .orElseThrow(() -> new RessourceIntrouvableException(ExceptionMessages.UTILISATEUR_INTROUVABLE + ", pseudo : " + loginRequest.getPseudo()));
 
         // Génération du token JWT
         return jwtUtil.generateToken(utilisateurDb);
@@ -105,14 +108,20 @@ public class UtilisateurService {
             UtilisateurDb utilisateurMaj = UtilisateurMapper.toDb(utilisateurDTO);
             utilisateurMaj.setId(utilisateur.getId());
             return UtilisateurMapper.toDto(repository.save(utilisateur));
-        }).orElseThrow(() -> new RessourceIntrouvableException(ExceptionMessages.UTILISATEUR_INTROUVABLE + ", id : "+ id));
+        }).orElseThrow(() -> new RessourceIntrouvableException(ExceptionMessages.UTILISATEUR_INTROUVABLE + ", id : " + id));
     }
 
     public void supprimerUtilisateur(UUID id) {
         if (!repository.existsById(id)) {
-            throw new RessourceIntrouvableException(ExceptionMessages.UTILISATEUR_INTROUVABLE + ", id : "+ id);
+            throw new RessourceIntrouvableException(ExceptionMessages.UTILISATEUR_INTROUVABLE + ", id : " + id);
         }
         repository.deleteById(id);
+    }
+
+    public List<RecetteDTO> getRecettePrefereesByUtilisateur(UUID id) {
+        return getUtilisateurParId(id)
+                .map(recetteLikeeService::getRecettesPreferees)
+                .orElseThrow(() -> new RessourceIntrouvableException(ExceptionMessages.UTILISATEUR_INTROUVABLE + ", id : " + id));
     }
 }
 

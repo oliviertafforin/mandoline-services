@@ -32,9 +32,7 @@ public class RecetteLikeeService {
     }
 
     public List<RecetteDTO> getRecettesPreferees(UtilisateurDTO utilisateurDTO) {
-
         List<RecetteLikeeDb> recetteLikeeList = repository.findByUtilisateurId(utilisateurDTO.getId());
-
         return recetteLikeeList
                 .stream()
                 .map(r -> RecetteMapper.toDto(r.getRecette()))
