@@ -21,13 +21,12 @@ import java.util.UUID;
 
 @Service
 public class ImageService {
-
-    private final ImageRepository repository;
     private Logger logger = LoggerFactory.getLogger(ImageService.class);
 
-    @Value("${file.upload-dir}")
-    private String uploadDir;
+    private final ImageRepository repository;
 
+    @Value("${FILE_UPLOAD_DIR}")
+    private String uploadDir;
 
     public ImageService(ImageRepository repository) {
         this.repository = repository;
@@ -78,20 +77,26 @@ public class ImageService {
         return image;
     }
 
+    /**
+     * Charge le fichier image dans la mémoire de l'application
+     *
+     * @param id   id de l'object ImageDTO
+     * @param file fichier image
+     * @return imageDTO
+     * @throws IOException
+     */
     public ImageDTO uploadImage(UUID id, MultipartFile file) throws IOException {
         // Générer un nom de fichier unique ou utiliser le nom d'origine
         String fileName = file.getOriginalFilename();
+        //Création du path à partir du nouveau nom et du path du répertoire d'images
         Path filePath = Paths.get(uploadDir, fileName);
         try {
-
-            // Sauvegarder le fichier dans le répertoire
-            Files.write(filePath, file.getBytes());
-
             //si on retrouve l'imageDTO
             ImageDTO majDto = getImageParId(id).map(imageDTO -> {
-                //supprimer prec image
+                //on supprime l'image prec
                 try {
-                    Files.delete(Path.of(imageDTO.getPath()));
+                    Path prevImagePath = Paths.get(uploadDir, imageDTO.getPath());
+                    Files.delete(prevImagePath);
                 } catch (Exception e) {
                     logger.error("Suppression du fichier " + imageDTO.getPath() + " échouée. Celui n'est plus utilisé, il faudrait le supprimer manuellement.");
                 }
@@ -101,6 +106,8 @@ public class ImageService {
                 return imageDTO;
             }).orElseThrow(FileNotFoundException::new);
 
+            // Sauvegarder le fichier dans le répertoire
+            Files.write(filePath, file.getBytes());
             return majDto;
         } catch (IOException e) {
             throw new IOException("Fichier non trouvé : " + fileName);

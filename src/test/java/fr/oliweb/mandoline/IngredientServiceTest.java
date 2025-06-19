@@ -11,9 +11,12 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.List;
 import java.util.UUID;
@@ -50,6 +53,7 @@ public class IngredientServiceTest {
 
     @Test
     @DisplayName("Test d'appel au endpoint getAllIngredients")
+    @WithMockUser(username = "testuser", roles = {"USER"}) // Simule un utilisateur connecté
     void shouldReturnNomIngredient() throws Exception {
         IngredientDb db = new IngredientDb();
         String nom = "testingredient";
@@ -57,7 +61,7 @@ public class IngredientServiceTest {
         db.setNom(nom);
         List<IngredientDb> ingredients = List.of(db);
         when(ingredientRepository.findAll()).thenReturn(ingredients);
-        this.mockMvc.perform(get("/api/ingredient")).andDo(print()).andExpect(status().isOk())
+        this.mockMvc.perform(get("/api/ingredients/all")).andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString(nom)));
     }
 

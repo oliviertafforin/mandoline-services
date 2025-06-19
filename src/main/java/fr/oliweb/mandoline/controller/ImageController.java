@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.slf4j.Logger;
@@ -36,12 +37,18 @@ import java.util.UUID;
 public class ImageController {
     @Value("${file.upload-dir}")
     private String uploadDir;
+
     private final ImageService imageService;
 
-    private Logger logger = LoggerFactory.getLogger(ImageController.class);
+    private final Logger logger = LoggerFactory.getLogger(ImageController.class);
 
     public ImageController(ImageService imageService) {
         this.imageService = imageService;
+    }
+
+    @PostConstruct
+    public void init() {
+        logger.info("Upload directory configured: {}", uploadDir);
     }
 
     // Récupérer une image par ID
