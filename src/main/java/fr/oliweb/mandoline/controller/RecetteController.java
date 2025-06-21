@@ -1,5 +1,6 @@
 package fr.oliweb.mandoline.controller;
 
+import fr.oliweb.mandoline.dtos.PageResponse;
 import fr.oliweb.mandoline.dtos.RecetteDTO;
 import fr.oliweb.mandoline.exceptions.ExceptionMessages;
 import fr.oliweb.mandoline.exceptions.RessourceIntrouvableException;
@@ -42,13 +43,13 @@ public class RecetteController {
 
     @GetMapping
     @Operation(summary = "Retourne une liste de recettes", description = "Renvoie la liste des recettes avec la pagination demandée")
-    public ResponseEntity<Page<RecetteDTO>> getAllRecettesWithPagination(@RequestParam(defaultValue = "0") @Min(0) int page,
-                                                   @RequestParam(defaultValue = "10") @Min(1) @Max(100) int size,
-                                                   @RequestParam(required = false) String nom,
-                                                   @RequestParam(required = false) List<String> criteres) {
+    public ResponseEntity<PageResponse<RecetteDTO>> getAllRecettesWithPagination(@RequestParam(defaultValue = "0") @Min(0) int page,
+                                                                                 @RequestParam(defaultValue = "10") @Min(1) @Max(100) int size,
+                                                                                 @RequestParam(required = false) String nom,
+                                                                                 @RequestParam(required = false) List<String> criteres) {
         Pageable pageable = PageRequest.of(page, size);
         Page<RecetteDTO> allRecettes = recetteService.getAllRecettes(pageable, nom, criteres);
-        return ResponseEntity.ok(allRecettes);
+        return ResponseEntity.ok(new PageResponse<>(allRecettes));
     }
 
     @GetMapping("/{id}")

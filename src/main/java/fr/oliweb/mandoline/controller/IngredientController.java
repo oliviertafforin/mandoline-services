@@ -1,6 +1,7 @@
 package fr.oliweb.mandoline.controller;
 
 import fr.oliweb.mandoline.dtos.IngredientDTO;
+import fr.oliweb.mandoline.dtos.PageResponse;
 import fr.oliweb.mandoline.exceptions.ExceptionMessages;
 import fr.oliweb.mandoline.exceptions.RessourceIntrouvableException;
 import fr.oliweb.mandoline.service.IngredientService;
@@ -42,11 +43,11 @@ public class IngredientController {
 
     @GetMapping
     @Operation(summary = "Retourne une liste d'ingrédients", description = "Renvoie la liste des ingrédients avec la pagination demandée")
-    public ResponseEntity<Page<IngredientDTO>> getAllIngredientsWithPagination(@RequestParam(defaultValue = "0") @Min(0) int page,
-                                                                               @RequestParam(defaultValue = "10") @Min(1) @Max(100) int size) {
+    public ResponseEntity<PageResponse<IngredientDTO>> getAllIngredientsWithPagination(@RequestParam(defaultValue = "0") @Min(0) int page,
+                                                                                       @RequestParam(defaultValue = "10") @Min(1) @Max(100) int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<IngredientDTO> ingredients = ingredientService.getAllIngredients(pageable);
-        return ResponseEntity.ok(ingredients);
+        return ResponseEntity.ok(new PageResponse<>(ingredients));
     }
 
     // Récupérer un ingredient par ID
